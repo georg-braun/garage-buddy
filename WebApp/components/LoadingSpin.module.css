@@ -1,0 +1,13 @@
+.welcome_box {
+    /* display in center */
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  
+    /* */
+    margin-top: 40vh;
+  }
+  
+  .align_text_center {
+    text-align: center;
+  }
