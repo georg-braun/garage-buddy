@@ -8,6 +8,7 @@ const provider = new GithubAuthProvider();
  *  Provide authentication context
  */
 const authContext = createContext();
+// eslint-disable-next-line react/prop-types
 export function AuthProvider({ children }) {
     const auth = useProvideAuth();
     return <authContext.Provider value={auth}>{children}</authContext.Provider>;
@@ -19,7 +20,6 @@ export function AuthProvider({ children }) {
 export const useAuth = () => {
     return useContext(authContext);
 };
-
 
 /**
  *  Wrapper for handling user signIn, signOut and information
@@ -56,8 +56,8 @@ function useProvideAuth() {
 
     useEffect(() => {
         const auth = getAuth(firebaseApp);
-        const unsubscribe = onAuthStateChanged(auth, handleUser)
-        
+        const unsubscribe = onAuthStateChanged(auth, handleUser);
+
         return () => unsubscribe();
     }, []);
 
