@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { getAuth, signInWithPopup, signOut, onAuthStateChanged, GithubAuthProvider } from '@firebase/auth';
 import firebaseApp from './firebase';
+import { createUser } from './db';
 
 const provider = new GithubAuthProvider();
 
@@ -31,6 +32,9 @@ function useProvideAuth() {
     const handleUser = (rawUser) => {
         if (rawUser) {
             const user = formatUser(rawUser);
+
+            // add user also to database
+            createUser(user.uid, user);
 
             setLoading(false);
             setUser(user);
