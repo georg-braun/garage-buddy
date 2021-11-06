@@ -29,7 +29,7 @@ export async function createVehicle(vehicle: IVehicle) {
 
         await setDoc(doc(db, 'vehicles', vehicle.id), vehicle, { merge: true });
 
-        console.log('Document writtten with ID: ' + vehicle.id);
+        console.log('Vehicle writtten with ID: ' + vehicle.id);
     } catch (e) {
         console.error('Error adding user: ', e);
     }
@@ -44,7 +44,7 @@ export async function getVehiclesForUser(userId: string): Promise<IVehicle[]> {
     querySnapshot.forEach((doc) => {
         const vehicle: IVehicle = doc.data() as unknown as IVehicle;
         //const vehicle: IVehicle = { ...doc.data };
-        console.log('new vehicle added: ' + vehicle.id);
+        console.log('found vehicle with id: ' + vehicle.id);
         vehiclesOfUser.push(vehicle);
     });
 

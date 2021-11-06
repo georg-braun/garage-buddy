@@ -20,14 +20,18 @@ import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
 import { createVehicle } from '@/lib/db';
 
-export default function AddVehicleModal() {
+interface AddVehicleModalProps {
+    onSubmitted?: () => Promise<void>;
+}
+
+export default function AddVehicleModal(props: AddVehicleModalProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const initialRef = React.useRef(); /* focused element on modal show */
 
     const auth = useAuth();
 
-    function addVehicle(vehicle: IVehicle) {
+    async function addVehicle(vehicle: IVehicle) {
         const userId = auth.user.uid;
         if (!userId) {
             console.log('couldnt add vehicle because of empty user id');
@@ -35,7 +39,7 @@ export default function AddVehicleModal() {
 
         vehicle.userId = userId;
 
-        createVehicle(vehicle);
+        await createVehicle(vehicle);
     }
 
     return (
@@ -50,10 +54,11 @@ export default function AddVehicleModal() {
                     <ModalBody pb={6}>
                         <Formik
                             initialValues={{ name: 'BMW', kilometer: 30000 }}
-                            onSubmit={(values, actions) => {
+                            onSubmit={async (values, actions) => {
                                 const vehicle: IVehicle = values as IVehicle;
                                 addVehicle(vehicle);
                                 onClose();
+                                await props.onSubmitted();
                                 /*
                                 setTimeout(() => {
                                     

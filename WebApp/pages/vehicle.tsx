@@ -36,9 +36,13 @@ export default function Home({}) {
         setVehicles(dbVehicles);
     }
 
+    async function onNewVehicleSubmitted(): Promise<void> {
+        await loadVehicles();
+    }
+
     return (
         <Layout>
-            <AddVehicleModal />
+            <AddVehicleModal onSubmitted={onNewVehicleSubmitted} />
 
             {vehicles?.map((vehicle) => (
                 <div key={vehicle.id}>
