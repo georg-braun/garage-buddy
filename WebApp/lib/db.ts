@@ -1,4 +1,4 @@
-import { getFirestore, collection, doc, setDoc, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, doc, setDoc, query, where, getDocs, deleteDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 
 import IVehicle from '@/lib/vehicle/IVehicle';
@@ -48,7 +48,10 @@ export async function getVehiclesForUser(userId: string): Promise<IVehicle[]> {
         vehiclesOfUser.push(vehicle);
     });
 
-    
-
     return vehiclesOfUser;
+}
+
+export async function deleteVehicle(vehicleId: string): Promise<void> {
+    console.log('delete vehicle with id: ' + vehicleId);
+    return await deleteDoc(doc(db, 'vehicles', vehicleId));
 }

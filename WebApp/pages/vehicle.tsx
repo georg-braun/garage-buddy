@@ -1,30 +1,28 @@
-import Head from 'next/head';
-
-import { useAuth } from '@/lib/auth';
-
 import React, { useState, useEffect } from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/layout';
-
 import { Button } from '@chakra-ui/button';
+import { DeleteIcon } from '@chakra-ui/icons';
+
 import Layout from '@/components/layout';
+import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
-import { createVehicle, getVehiclesForUser } from '@/lib/db';
+import { getVehiclesForUser, deleteVehicle as dbDeleteVehicle } from '@/lib/db';
+import AddVehicleModal from '@/components/AddVehicleModal';
 
 export default function Home({}) {
     const auth = useAuth();
 
     const [vehicles, setVehicles] = useState<IVehicle[]>([
-        { id: '0', name: 'Test-Fahrzeug', userId: '2', kilometer: 40000 },
+        { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 40000 },
     ]);
 
     useEffect(() => {
         loadVehicles();
     }, [auth]);
 
-    function addVehicle() {
-        const userId = auth.user.uid;
-        const testVehicle: IVehicle = { id: '0', name: 'Test-Fahrzeug', userId: userId, kilometer: 40000 };
-        createVehicle(testVehicle);
+    async function deleteVehicle(vehicleId: string) {
+        await dbDeleteVehicle(vehicleId);
+        await loadVehicles();
     }
 
     async function loadVehicles() {
@@ -40,12 +38,17 @@ export default function Home({}) {
 
     return (
         <Layout>
-            <Button onClick={addVehicle}>+</Button>
+            <AddVehicleModal />
 
             {vehicles?.map((vehicle) => (
-                <p key={vehicle.id}>
-                    {vehicle.name} ({vehicle.id}) von {vehicle.userId}
-                </p>
+                <div key={vehicle.id}>
+                    <p>
+                        {vehicle.name} ({vehicle.id}) von {vehicle.userId}
+                    </p>
+                    <Button onClick={() => deleteVehicle(vehicle.id)}>
+                        <DeleteIcon />
+                    </Button>
+                </div>
             ))}
         </Layout>
     );
