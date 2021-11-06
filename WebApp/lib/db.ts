@@ -1,5 +1,8 @@
+import { getFirestore, collection, doc, setDoc, query, where, getDocs } from 'firebase/firestore';
+import { v4 as uuid } from 'uuid';
+
+import IVehicle from '@/lib/vehicle/IVehicle';
 import firebaseApp from './firebase';
-import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
 
 const db = getFirestore(firebaseApp);
 
@@ -18,4 +21,34 @@ export async function createUser(uid, data) {
     } catch (e) {
         console.error('Error adding user: ', e);
     }
+}
+
+export async function createVehicle(vehicle: IVehicle) {
+    try {
+        vehicle.id = uuid();
+
+        await setDoc(doc(db, 'vehicles', vehicle.id), vehicle, { merge: true });
+
+        console.log('Document writtten with ID: ' + vehicle.id);
+    } catch (e) {
+        console.error('Error adding user: ', e);
+    }
+}
+
+export async function getVehiclesForUser(userId: string): Promise<IVehicle[]> {
+    const vehiclesWithUserIdQuery = query(collection(db, 'vehicles'), where('userId', '==', userId));
+    const querySnapshot = await getDocs(vehiclesWithUserIdQuery);
+
+    const vehiclesOfUser: IVehicle[] = [];
+
+    querySnapshot.forEach((doc) => {
+        const vehicle: IVehicle = doc.data() as unknown as IVehicle;
+        //const vehicle: IVehicle = { ...doc.data };
+        console.log('new vehicle added: ' + vehicle.id);
+        vehiclesOfUser.push(vehicle);
+    });
+
+    
+
+    return vehiclesOfUser;
 }

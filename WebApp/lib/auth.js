@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { getAuth, signInWithPopup, signOut, onAuthStateChanged, GithubAuthProvider } from '@firebase/auth';
+import { getAuth, signInWithRedirect, signOut, onAuthStateChanged, GithubAuthProvider } from '@firebase/auth';
 import firebaseApp from './firebase';
 import { createUser } from './db';
 
@@ -50,7 +50,7 @@ function useProvideAuth() {
         setLoading(true);
 
         const auth = getAuth(firebaseApp);
-        return signInWithPopup(auth, provider).then((response) => handleUser(response.user));
+        return signInWithRedirect(auth, provider).then((response) => handleUser(response.user));
     };
 
     const signout = () => {
