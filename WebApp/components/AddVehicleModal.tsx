@@ -18,29 +18,16 @@ import React from 'react';
 
 import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
-import { createVehicle } from '@/lib/db';
 
-interface AddVehicleModalProps {
-    onSubmitted?: () => Promise<void>;
+interface VehicleEditModalProps {
+    onSubmitted?: (IVehicle) => Promise<void>;
+    initialValue: IVehicle;
 }
 
-export default function AddVehicleModal(props: AddVehicleModalProps) {
+export default function VehicleEditModal(props: VehicleEditModalProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const initialRef = React.useRef(); /* focused element on modal show */
-
-    const auth = useAuth();
-
-    async function addVehicle(vehicle: IVehicle) {
-        const userId = auth.user.uid;
-        if (!userId) {
-            console.log('couldnt add vehicle because of empty user id');
-        }
-
-        vehicle.userId = userId;
-
-        await createVehicle(vehicle);
-    }
 
     return (
         <>
@@ -53,19 +40,11 @@ export default function AddVehicleModal(props: AddVehicleModalProps) {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Formik
-                            initialValues={{ name: 'BMW', kilometer: 30000 }}
+                            initialValues={props.initialValue}
                             onSubmit={async (values, actions) => {
                                 const vehicle: IVehicle = values as IVehicle;
-                                addVehicle(vehicle);
+                                await props.onSubmitted(vehicle);
                                 onClose();
-                                await props.onSubmitted();
-                                /*
-                                setTimeout(() => {
-                                    
-                                    alert(JSON.stringify(values, null, 2));
-                                    actions.setSubmitting(true);
-                                }, 1000);
-                                */
                             }}
                         >
                             {(props) => (

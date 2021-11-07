@@ -6,14 +6,15 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import Layout from '@/components/layout';
 import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
-import { getVehiclesForUser, deleteVehicle as dbDeleteVehicle } from '@/lib/db';
-import AddVehicleModal from '@/components/AddVehicleModal';
+import { createVehicle, getVehiclesForUser, deleteVehicle as dbDeleteVehicle } from '@/lib/db';
+import EditVehicleModal from '@/components/AddVehicleModal';
 
 export default function Home({}) {
     const auth = useAuth();
 
+    const exampleVehicle: IVehicle = { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 39000 };
     const [vehicles, setVehicles] = useState<IVehicle[]>([
-        { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 40000 },
+        { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 39000 },
     ]);
 
     useEffect(() => {
@@ -23,6 +24,17 @@ export default function Home({}) {
     async function deleteVehicle(vehicleId: string) {
         await dbDeleteVehicle(vehicleId);
         await loadVehicles();
+    }
+
+    async function addVehicle(vehicle: IVehicle) {
+        const userId = auth.user.uid;
+        if (!userId) {
+            console.log('couldnt add vehicle because of empty user id');
+        }
+
+        vehicle.userId = userId;
+
+        await createVehicle(vehicle);
     }
 
     async function loadVehicles() {
@@ -36,19 +48,21 @@ export default function Home({}) {
         setVehicles(dbVehicles);
     }
 
-    async function onNewVehicleSubmitted(): Promise<void> {
+    async function onNewVehicleSubmitted(vehicle: IVehicle): Promise<void> {
+        await addVehicle(vehicle);
         await loadVehicles();
     }
 
     return (
         <Layout>
-            <AddVehicleModal onSubmitted={onNewVehicleSubmitted} />
+            <EditVehicleModal onSubmitted={onNewVehicleSubmitted} initialValue={exampleVehicle} />
 
             {vehicles?.map((vehicle) => (
                 <div key={vehicle.id}>
                     <p>
                         {vehicle.name} ({vehicle.id}) von {vehicle.userId}
                     </p>
+
                     <Button onClick={() => deleteVehicle(vehicle.id)}>
                         <DeleteIcon />
                     </Button>
