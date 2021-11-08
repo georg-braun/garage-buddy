@@ -12,7 +12,7 @@ import {
     deleteVehicle as dbDeleteVehicle,
     updateVehicle as dbUpdateVehicle,
 } from '@/lib/db';
-import EditVehicleModal from '@/components/AddVehicleModal';
+import EditVehicleModal from '@/components/VehicleEditModalProps';
 
 export default function Home({}) {
     const auth = useAuth();
