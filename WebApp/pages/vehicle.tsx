@@ -6,7 +6,12 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import Layout from '@/components/layout';
 import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
-import { createVehicle, getVehiclesForUser, deleteVehicle as dbDeleteVehicle } from '@/lib/db';
+import {
+    createVehicle,
+    getVehiclesForUser,
+    deleteVehicle as dbDeleteVehicle,
+    updateVehicle as dbUpdateVehicle,
+} from '@/lib/db';
 import EditVehicleModal from '@/components/AddVehicleModal';
 
 export default function Home({}) {
@@ -37,6 +42,16 @@ export default function Home({}) {
         await createVehicle(vehicle);
     }
 
+    async function updateVehicle(vehicle: IVehicle) {
+        const userId = auth.user.uid;
+        if (!userId) {
+            console.log('couldnt update vehicle because of empty user id');
+        }
+
+        vehicle.userId = userId;
+        await dbUpdateVehicle(vehicle);
+    }
+
     async function loadVehicles() {
         if (!auth?.user?.uid) {
             console.log('no user id found => dont try to get vehicle data');
@@ -53,6 +68,11 @@ export default function Home({}) {
         await loadVehicles();
     }
 
+    async function onEditedVehicleSubmitted(vehicle: IVehicle): Promise<void> {
+        await updateVehicle(vehicle);
+        await loadVehicles();
+    }
+
     return (
         <Layout>
             <EditVehicleModal onSubmitted={onNewVehicleSubmitted} initialValue={exampleVehicle} />
@@ -62,7 +82,7 @@ export default function Home({}) {
                     <p>
                         {vehicle.name} ({vehicle.id}) von {vehicle.userId}
                     </p>
-
+                    <EditVehicleModal onSubmitted={onEditedVehicleSubmitted} initialValue={vehicle} />
                     <Button onClick={() => deleteVehicle(vehicle.id)}>
                         <DeleteIcon />
                     </Button>

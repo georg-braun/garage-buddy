@@ -1,4 +1,4 @@
-import { getFirestore, collection, doc, setDoc, query, where, getDocs, deleteDoc } from 'firebase/firestore';
+import { getFirestore, collection, doc, setDoc, query, where, getDocs, deleteDoc, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 
 import IVehicle from '@/lib/vehicle/IVehicle';
@@ -30,6 +30,17 @@ export async function createVehicle(vehicle: IVehicle) {
         await setDoc(doc(db, 'vehicles', vehicle.id), vehicle, { merge: true });
 
         console.log('Vehicle writtten with ID: ' + vehicle.id);
+    } catch (e) {
+        console.error('Error adding user: ', e);
+    }
+}
+
+export async function updateVehicle(vehicle: IVehicle) {
+    try {
+        const docRef = doc(db, 'vehicles', vehicle.id);
+        await setDoc(docRef, vehicle, { merge: true });
+
+        console.log('Vehicle updated with ID: ' + vehicle.id);
     } catch (e) {
         console.error('Error adding user: ', e);
     }
