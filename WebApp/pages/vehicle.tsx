@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
-import { DeleteIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 import Layout from '@/components/layout';
 import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
 import {
-    createVehicle,
     getVehiclesForUser,
+    createVehicle as dbCreateVehicle,
     deleteVehicle as dbDeleteVehicle,
     updateVehicle as dbUpdateVehicle,
 } from '@/lib/db';
@@ -39,7 +39,7 @@ export default function Home({}) {
 
         vehicle.userId = userId;
 
-        await createVehicle(vehicle);
+        await dbCreateVehicle(vehicle);
     }
 
     async function updateVehicle(vehicle: IVehicle) {
@@ -75,17 +75,23 @@ export default function Home({}) {
 
     return (
         <Layout>
-            <EditVehicleModal onSubmitted={onNewVehicleSubmitted} initialValue={exampleVehicle} />
+            <EditVehicleModal onSubmitted={onNewVehicleSubmitted} initialValue={exampleVehicle}>
+                <Button>+</Button>
+            </EditVehicleModal>
 
             {vehicles?.map((vehicle) => (
                 <div key={vehicle.id}>
-                    <p>
+                    <span>
                         {vehicle.name} ({vehicle.id}) von {vehicle.userId}
-                    </p>
-                    <EditVehicleModal onSubmitted={onEditedVehicleSubmitted} initialValue={vehicle} />
-                    <Button onClick={() => deleteVehicle(vehicle.id)}>
-                        <DeleteIcon />
-                    </Button>
+                        <EditVehicleModal onSubmitted={onEditedVehicleSubmitted} initialValue={vehicle}>
+                            <Button size="sm">
+                                <EditIcon />
+                            </Button>
+                        </EditVehicleModal>
+                        <Button onClick={() => deleteVehicle(vehicle.id)} size="sm">
+                            <DeleteIcon />
+                        </Button>
+                    </span>
                 </div>
             ))}
         </Layout>

@@ -20,6 +20,7 @@ import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
 
 interface VehicleEditModalProps {
+    children: JSX.Element;
     onSubmitted?: (IVehicle) => Promise<void>;
     initialValue: IVehicle;
 }
@@ -31,7 +32,7 @@ export default function VehicleEditModal(props: VehicleEditModalProps) {
 
     return (
         <>
-            <Button onClick={onOpen}>Neues Fahrzeug</Button>
+            <span onClick={onOpen}>{props.children}</span>
 
             <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
