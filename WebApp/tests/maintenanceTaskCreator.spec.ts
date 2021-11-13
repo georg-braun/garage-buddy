@@ -7,7 +7,7 @@ import createMaintenanceTasks from '../lib/maintenance/maintenanceTaskCreator';
 import IVehicle from '../lib/vehicle/IVehicle';
 
 describe('correct tasks are created', () => {
-    it('maintenance task is created because of exceeded kilometer', () => {
+    it('maintenance task is created because of exceeded kilometer in kilometer range', () => {
         // arrange
         const pattern: IMaintenancePattern = {
             id: '0',
@@ -25,12 +25,12 @@ describe('correct tasks are created', () => {
 
         const lastDoneMaintenance: IDoneMaintenance = {
             patternId: '0',
-            kilometer: 500,
+            kilometer: 1100,
             date: new Date(),
         };
 
         // act
-        const tasks = createMaintenanceTasks(pattern, lastDoneMaintenance, vehicle);
+        const tasks = createMaintenanceTasks(pattern, lastDoneMaintenance, vehicle, 200);
 
         // assert
         expect(tasks.length).to.equal(1);

@@ -7,8 +7,9 @@ export default function createMaintenanceTasks(
     pattern: IMaintenancePattern,
     lastDoneMaintenance: IDoneMaintenance,
     vehicle: IVehicle,
+    kilometerHorizon: number,
 ): IMaintenanceTask[] {
-    const kilometerAfterLastMaintenance = vehicle.kilometer - lastDoneMaintenance.kilometer;
+    const kilometerAfterLastMaintenance = vehicle.kilometer + kilometerHorizon - lastDoneMaintenance.kilometer;
     const kilometerExceeded = kilometerAfterLastMaintenance > pattern.kilometerInterval;
 
     if (kilometerExceeded) {
