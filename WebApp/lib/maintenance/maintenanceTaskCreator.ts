@@ -4,25 +4,25 @@ import IMaintenanceTask from './IMaintenanceTask';
 import IDoneMaintenance from './IDoneMaintenance';
 import moment from 'moment';
 
-export default function createMaintenanceTasks(
+export default function createTask(
+    vehicle: IVehicle,
     pattern: IMaintenancePattern,
     lastDoneMaintenance: IDoneMaintenance,
-    vehicle: IVehicle,
-    kilometerScope: number,
+    kmScope: number,
+    timeScopeInDays: number,
     todayAsString: string,
-    timeRangeScopeInDays: number,
 ): IMaintenanceTask[] {
-    const kilometerAfterLastMaintenance = vehicle.kilometer + kilometerScope - lastDoneMaintenance.kilometer;
-    const kilometerExceeded = kilometerAfterLastMaintenance > pattern.kilometerInterval;
+    const kmAfterLastMaintenance = vehicle.kilometer + kmScope - lastDoneMaintenance.kilometer;
+    const kmExceeded = kmAfterLastMaintenance > pattern.kilometerInterval;
 
     const timeRangeExceeded = calcIfTimeRangeIsExceeded(
         lastDoneMaintenance.date,
         pattern.timeIntervalInDays,
+        timeScopeInDays,
         todayAsString,
-        timeRangeScopeInDays,
     );
 
-    if (kilometerExceeded || timeRangeExceeded) {
+    if (kmExceeded || timeRangeExceeded) {
         return [{ name: 'Ölwechsel' }];
     }
 
@@ -31,17 +31,22 @@ export default function createMaintenanceTasks(
 
 function calcIfTimeRangeIsExceeded(
     dateOfLastMaintenanceAsString: string,
-    maintenanceTimeIntervalInDays: number,
-    todayAsString: string,
+    maintenanceIntervalInDays: number,
     timeRangeScopeInDays: number,
+    todayAsString: string,
 ): boolean {
+    // history
+    const maintenanceTimeInterval = moment.duration(maintenanceIntervalInDays, 'days');
     const lastMaintenanceDate = moment(dateOfLastMaintenanceAsString);
-    const today = moment(todayAsString);
+    // next time slot
+    const nextMaintenanceDate = moment(lastMaintenanceDate);
+    nextMaintenanceDate.add(maintenanceTimeInterval);
+
+    // observed range
     const timeScope = moment.duration(timeRangeScopeInDays, 'days');
-    const maintenanceTimeInterval = moment.duration(maintenanceTimeIntervalInDays, 'days');
+    const today = moment(todayAsString);
+    const dayInFuture = moment(today);
+    dayInFuture.add(timeScope);
 
-    const dateOfNextMaintenanceTask = lastMaintenanceDate.add(maintenanceTimeInterval);
-    const observedDate = today.add(timeScope);
-
-    return observedDate < dateOfNextMaintenanceTask;
+    return nextMaintenanceDate.isBefore(dayInFuture);
 }
