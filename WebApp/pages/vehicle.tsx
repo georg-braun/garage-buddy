@@ -13,6 +13,7 @@ import {
     updateVehicle as dbUpdateVehicle,
 } from '@/lib/db';
 import EditVehicleModal from '@/components/VehicleEditModalProps';
+import PatternList from '@/components/PatternList';
 
 export default function Home({}) {
     const auth = useAuth();
@@ -21,6 +22,8 @@ export default function Home({}) {
     const [vehicles, setVehicles] = useState<IVehicle[]>([
         { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 39000 },
     ]);
+
+    const [selectedVehicle, setSelectedVehicle] = useState<IVehicle>();
 
     useEffect(() => {
         loadVehicles();
@@ -82,7 +85,9 @@ export default function Home({}) {
             {vehicles?.map((vehicle) => (
                 <div key={vehicle.id}>
                     <span>
-                        {vehicle.name} ({vehicle.id}) von {vehicle.userId}
+                        <Button onClick={() => setSelectedVehicle(vehicle)}>
+                            {vehicle.name}
+                        </Button>
                         <EditVehicleModal onSubmitted={onEditedVehicleSubmitted} initialValue={vehicle}>
                             <Button size="sm">
                                 <EditIcon />
@@ -94,6 +99,16 @@ export default function Home({}) {
                     </span>
                 </div>
             ))}
+
+            {selectedVehicle ? (
+                <div>
+                    <p>Details zu {selectedVehicle.name} </p>
+                    <h1>Wartungsbeschreibung</h1>
+
+                </div>
+            ) : (
+                <div><PatternList /></div>
+            )}
         </Layout>
     );
 }
