@@ -28,11 +28,21 @@ export default function Layout({ children }) {
 
             {auth.user ? (
                 <Flex direction="column">
-                    <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="flex-end" p="3">
-                        🧔 {auth.user.email}
-                        <Button colorScheme="blue" size="xs" ml="5" onClick={(e) => auth.signout()}>
-                            Sign Out
-                        </Button>
+                    <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="space-between" p="3">
+                        <Flex>
+                            <Flex mr="5">
+                                <Link href="/">🏠 Startseite</Link>
+                            </Flex>
+                            <Flex>
+                                <Link href="/vehicle">🚘 Fahrzeuge</Link>
+                            </Flex>
+                        </Flex>
+                        <Flex>
+                            🧔 {auth.user.email}
+                            <Button colorScheme="blue" size="xs" ml="5" onClick={(e) => auth.signout()}>
+                                Sign Out
+                            </Button>
+                        </Flex>
                     </Flex>
 
                     <div>{children}</div>
