@@ -1,4 +1,4 @@
-import IMaintenancePattern from '../lib/maintenance/IMaintenancePattern';
+import IPattern from '../lib/vehicle/IPattern';
 import IFinishedMaintenance from '../lib/maintenance/IDoneMaintenance';
 import createTask from '../lib/maintenance/maintenanceTaskCreator';
 import IVehicle from '../lib/vehicle/IVehicle';
@@ -39,65 +39,3 @@ test('maintenance task is created because of exceeded time', () => {
     expect(tasks.length).toBe(1);
 });
 
-class VehicleBuilder {
-    vehicle: IVehicle = {
-        id: '0',
-        name: '',
-        kilometer: 0,
-        userId: '0',
-    };
-
-    build(): IVehicle {
-        return this.vehicle;
-    }
-
-    withKilometer(km: number): VehicleBuilder {
-        this.vehicle.kilometer = km;
-        return this;
-    }
-}
-
-class FinishedMaintenanceBuilder {
-    maintenance: IFinishedMaintenance = {
-        date: '2020-01-01',
-        kilometer: 0,
-        patternId: '0',
-    };
-
-    build(): IFinishedMaintenance {
-        return this.maintenance;
-    }
-
-    withKilometer(km: number): FinishedMaintenanceBuilder {
-        this.maintenance.kilometer = km;
-        return this;
-    }
-
-    withDate(date: string): FinishedMaintenanceBuilder {
-        this.maintenance.date = date;
-        return this;
-    }
-}
-
-class PatternBuilder {
-    pattern: IMaintenancePattern = {
-        id: '0',
-        name: '',
-        kilometerInterval: 0,
-        timeIntervalInDays: 0,
-    };
-
-    build(): IMaintenancePattern {
-        return this.pattern;
-    }
-
-    withKilometerInterval(km: number): PatternBuilder {
-        this.pattern.kilometerInterval = km;
-        return this;
-    }
-
-    withTimeInterval(days: number): PatternBuilder {
-        this.pattern.timeIntervalInDays = days;
-        return this;
-    }
-}

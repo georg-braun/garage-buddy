@@ -13,15 +13,13 @@ import {
     updateVehicle as dbUpdateVehicle,
 } from '@/lib/db';
 import EditVehicleModal from '@/components/VehicleEditModalProps';
-import PatternList from '@/components/PatternList';
+import PatternOverview from '@/components/PatternOverview';
+import InMemVehicleRepository from '@/lib/repository/InMemVehicleRepository';
 
 export default function Home({}) {
     const auth = useAuth();
 
-    const exampleVehicle: IVehicle = { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 39000 };
-    const [vehicles, setVehicles] = useState<IVehicle[]>([
-        { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 39000 },
-    ]);
+    const [vehicles, setVehicles] = useState<IVehicle[]>([]);
 
     const [selectedVehicle, setSelectedVehicle] = useState<IVehicle>();
 
@@ -62,8 +60,9 @@ export default function Home({}) {
         }
 
         console.log('try to get user vehicles');
-        const dbVehicles = await getVehiclesForUser(auth.user.uid);
-        setVehicles(dbVehicles);
+        //const dbVehicles = await getVehiclesForUser(auth.user.uid);
+        const inMemVehicles = await InMemVehicleRepository.getVehiclesAsync();
+        setVehicles(inMemVehicles);
     }
 
     async function onNewVehicleSubmitted(vehicle: IVehicle): Promise<void> {
@@ -78,16 +77,14 @@ export default function Home({}) {
 
     return (
         <Layout>
-            <EditVehicleModal onSubmitted={onNewVehicleSubmitted} initialValue={exampleVehicle}>
+            <EditVehicleModal onSubmitted={onNewVehicleSubmitted}>
                 <Button>+</Button>
             </EditVehicleModal>
 
             {vehicles?.map((vehicle) => (
                 <div key={vehicle.id}>
                     <span>
-                        <Button onClick={() => setSelectedVehicle(vehicle)}>
-                            {vehicle.name}
-                        </Button>
+                        <Button onClick={() => setSelectedVehicle(vehicle)}>{vehicle.name}</Button>
                         <EditVehicleModal onSubmitted={onEditedVehicleSubmitted} initialValue={vehicle}>
                             <Button size="sm">
                                 <EditIcon />
@@ -103,11 +100,11 @@ export default function Home({}) {
             {selectedVehicle ? (
                 <div>
                     <p>Details zu {selectedVehicle.name} </p>
-                    <h1>Wartungsbeschreibung</h1>
-
+                    <Heading size="lg">Inspektionsmuster</Heading>
+                    <PatternOverview vehicle={selectedVehicle} />
                 </div>
             ) : (
-                <div><PatternList /></div>
+                <div></div>
             )}
         </Layout>
     );

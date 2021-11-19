@@ -22,7 +22,7 @@ import IVehicle from '@/lib/vehicle/IVehicle';
 interface VehicleEditModalProps {
     children: JSX.Element;
     onSubmitted?: (IVehicle) => Promise<void>;
-    initialValue: IVehicle;
+    initialValue?: IVehicle;
 }
 
 export default function VehicleEditModal(props: VehicleEditModalProps) {
