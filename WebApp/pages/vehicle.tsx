@@ -6,18 +6,14 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import Layout from '@/components/layout';
 import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
-import {
-    getVehiclesForUser,
-    createVehicle as dbCreateVehicle,
-    deleteVehicle as dbDeleteVehicle,
-    updateVehicle as dbUpdateVehicle,
-} from '@/lib/db';
 import EditVehicleModal from '@/components/VehicleEditModalProps';
 import PatternOverview from '@/components/PatternOverview';
-import InMemVehicleRepository from '@/lib/repository/InMemVehicleRepository';
+import VehicleRepository from '@/lib/repository/VehicleRepository';
+import IVehicleRepository from '@/lib/repository/IVehicleRepository';
 
 export default function Home({}) {
     const auth = useAuth();
+    const vehicleRepository: IVehicleRepository = VehicleRepository;
 
     const [vehicles, setVehicles] = useState<IVehicle[]>([]);
 
@@ -28,7 +24,7 @@ export default function Home({}) {
     }, [auth]);
 
     async function deleteVehicle(vehicleId: string) {
-        await dbDeleteVehicle(vehicleId);
+        await vehicleRepository.deleteVehicleAsync(vehicleId);
         await loadVehicles();
     }
 
@@ -40,7 +36,7 @@ export default function Home({}) {
 
         vehicle.userId = userId;
 
-        await dbCreateVehicle(vehicle);
+        await vehicleRepository.createVehicleAsync(vehicle);
     }
 
     async function updateVehicle(vehicle: IVehicle) {
@@ -50,7 +46,7 @@ export default function Home({}) {
         }
 
         vehicle.userId = userId;
-        await dbUpdateVehicle(vehicle);
+        await vehicleRepository.updateVehicleAsync(vehicle);
     }
 
     async function loadVehicles() {
@@ -60,9 +56,8 @@ export default function Home({}) {
         }
 
         console.log('try to get user vehicles');
-        //const dbVehicles = await getVehiclesForUser(auth.user.uid);
-        const inMemVehicles = await InMemVehicleRepository.getVehiclesAsync();
-        setVehicles(inMemVehicles);
+        const vehiclesFromRepo = await vehicleRepository.getVehiclesForUserAsync(auth.user.uid);
+        setVehicles(vehiclesFromRepo);
     }
 
     async function onNewVehicleSubmitted(vehicle: IVehicle): Promise<void> {

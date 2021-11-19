@@ -1,9 +1,11 @@
+import { v4 as uuid } from 'uuid';
+
 import IVehicle from '@/lib/vehicle/IVehicle';
 import IPattern from '@/lib/vehicle/IPattern';
 
 export class VehicleBuilder {
     vehicle: IVehicle = {
-        id: '0',
+        id: uuid(),
         name: '',
         kilometer: 0,
         userId: '0',
@@ -32,7 +34,7 @@ export class VehicleBuilder {
 
 export class PatternBuilder {
     pattern: IPattern = {
-        id: '0',
+        id: uuid(),
         name: '',
         kilometerInterval: 0,
         timeIntervalInDays: 0,
@@ -46,7 +48,6 @@ export class PatternBuilder {
         this.pattern.name = name;
         return this;
     }
-
 
     withKilometerInterval(km: number): PatternBuilder {
         this.pattern.kilometerInterval = km;

@@ -24,8 +24,9 @@ export default function PatternOverview(props: IPatternOverviewProps) {
                     </span>
                 </div>
             ))}
+            ---
             <PatternEntry
-                pattern={{ id: '0', name: 'Inspektion', kilometerInterval: 5000, timeIntervalInDays: 365 }}
+                pattern={{ id: '0', name: 'Inspektion', kilometerInterval: 0, timeIntervalInDays: 0 }}
                 submitText="Hinzufügen"
                 onSubmit={async (pattern) => /*InMemVehicleRepository.addPatternAsync(pattern)*/ console.log('add')}
             />

@@ -1,31 +1,50 @@
+import { v4 as uuid } from 'uuid';
+
 import IPattern from '@/lib/vehicle/IPattern';
 import IVehicle from '@/lib/vehicle/IVehicle';
 import { PatternBuilder, VehicleBuilder } from '../vehicleBuilder';
-interface IPatternRepository {
-    getVehiclesAsync(): Promise<IVehicle[]>;
-    addVehicleAsync(pattern: IVehicle): Promise<void>;
-}
-
-class InMemVehicleRepository implements IPatternRepository {
+import IVehicleRepository from './IVehicleRepository';
+class InMemVehicleRepository implements IVehicleRepository {
     vehicles: IVehicle[] = [];
 
     constructor() {
-        const patternBuilder = new PatternBuilder()
-            .withName('Luftfilter')
-            .withKilometerInterval(5000)
-            .withTimeInterval(365);
-        const vehicleBuilder = new VehicleBuilder()
+        const firstVehicle = new VehicleBuilder()
             .withName('Opel')
             .withKilometer(4000)
-            .withPattern(patternBuilder.pattern);
-        this.vehicles.push(vehicleBuilder.vehicle);
+            .withPattern(
+                new PatternBuilder().withName('Luftfilter').withKilometerInterval(5000).withTimeInterval(365).build(),
+            )
+            .build();
+        const secondVehicle = new VehicleBuilder()
+            .withName('Audi')
+            .withKilometer(8000)
+            .withPattern(
+                new PatternBuilder().withName('Luftfilter').withKilometerInterval(10000).withTimeInterval(365).build(),
+            )
+            .withPattern(
+                new PatternBuilder().withName('Ölwechsel').withKilometerInterval(5000).withTimeInterval(365).build(),
+            )
+            .build();
+        this.vehicles.push(firstVehicle);
+        this.vehicles.push(secondVehicle);
     }
 
-    getVehiclesAsync(): Promise<IVehicle[]> {
-        return Promise.resolve(this.vehicles);
+    updateVehicleAsync(vehicle: IVehicle): Promise<void> {
+        return Promise.resolve();
+    }
+    deleteVehicleAsync(vehicleId: string): Promise<void> {
+        const index = this.vehicles.findIndex((_) => _.id === vehicleId);
+        this.vehicles.splice(index, 1);
+        return Promise.resolve();
     }
 
-    addVehicleAsync(vehicle: IVehicle): Promise<void> {
+    getVehiclesForUserAsync(userId: string): Promise<IVehicle[]> {
+        // ignore user id for local development
+        return Promise.resolve([...this.vehicles]);
+    }
+
+    createVehicleAsync(vehicle: IVehicle): Promise<void> {
+        if (vehicle.id == '0') vehicle.id = uuid();
         this.vehicles.push(vehicle);
         return Promise.resolve();
     }

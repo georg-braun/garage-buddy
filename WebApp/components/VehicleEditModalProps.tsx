@@ -18,6 +18,7 @@ import React from 'react';
 
 import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/vehicle/IVehicle';
+import { VehicleBuilder } from '@/lib/vehicleBuilder';
 
 interface VehicleEditModalProps {
     children: JSX.Element;
@@ -28,6 +29,7 @@ interface VehicleEditModalProps {
 export default function VehicleEditModal(props: VehicleEditModalProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const initialValue = props.initialValue ?? new VehicleBuilder().withName('BMW').withKilometer(2000).build();
     const initialRef = React.useRef(); /* focused element on modal show */
 
     return (
@@ -41,7 +43,7 @@ export default function VehicleEditModal(props: VehicleEditModalProps) {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Formik
-                            initialValues={props.initialValue}
+                            initialValues={initialValue}
                             onSubmit={async (values, actions) => {
                                 const vehicle: IVehicle = values as IVehicle;
                                 await props.onSubmitted(vehicle);
