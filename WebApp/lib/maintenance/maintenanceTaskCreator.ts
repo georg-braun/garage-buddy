@@ -23,7 +23,7 @@ export default function createTask(
     );
 
     if (kmExceeded || timeRangeExceeded) {
-        return [{ name: 'Ölwechsel' }];
+        return [{ name: pattern.name }];
     }
 
     return [];

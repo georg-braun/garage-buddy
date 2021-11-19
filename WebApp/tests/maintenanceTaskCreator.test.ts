@@ -2,6 +2,7 @@ import IPattern from '../lib/vehicle/IPattern';
 import IFinishedMaintenance from '../lib/maintenance/IDoneMaintenance';
 import createTask from '../lib/maintenance/maintenanceTaskCreator';
 import IVehicle from '../lib/vehicle/IVehicle';
+import { VehicleBuilder } from '@/lib/vehicleBuilder';
 
 test('adds 1 + 2 to equal 3', () => {
     const x = 3;

@@ -10,6 +10,10 @@ import EditVehicleModal from '@/components/VehicleEditModalProps';
 import PatternOverview from '@/components/PatternOverview';
 import VehicleRepository from '@/lib/repository/VehicleRepository';
 import IVehicleRepository from '@/lib/repository/IVehicleRepository';
+import createTask from '@/lib/maintenance/maintenanceTaskCreator';
+import IDoneMaintenance from '@/lib/maintenance/IDoneMaintenance';
+import FinishedMaintenanceBuilder from '@/lib/maintenance/doneMaintenanceBuilder';
+import IMaintenanceTask from '@/lib/maintenance/IMaintenanceTask';
 
 export default function Home({}) {
     const auth = useAuth();
@@ -18,10 +22,30 @@ export default function Home({}) {
     const [vehicles, setVehicles] = useState<IVehicle[]>([]);
 
     const [selectedVehicle, setSelectedVehicle] = useState<IVehicle>();
+    const [selectedVehicleTasks, setSelectedVehicleTasks] = useState<IMaintenanceTask[]>();
 
     useEffect(() => {
         loadVehicles();
     }, [auth]);
+
+    function createTasksForSelectedVehicle(vehicle: IVehicle) {
+        if (!vehicle) return;
+
+        const allTasks: IMaintenanceTask[] = [];
+        const patterns = vehicle.patterns;
+
+        const lastDoneTask: IDoneMaintenance = new FinishedMaintenanceBuilder()
+            .withDate('1992-10-15')
+            .withKilometer(0)
+            .build();
+
+        patterns.forEach((pattern) => {
+            const tasksForCurrentPattern = createTask(vehicle, pattern, lastDoneTask, 50000, 365, '2021-11-19');
+            allTasks.push(...tasksForCurrentPattern);
+        });
+
+        setSelectedVehicleTasks(allTasks);
+    }
 
     async function deleteVehicle(vehicleId: string) {
         await vehicleRepository.deleteVehicleAsync(vehicleId);
@@ -79,7 +103,14 @@ export default function Home({}) {
             {vehicles?.map((vehicle) => (
                 <div key={vehicle.id}>
                     <span>
-                        <Button onClick={() => setSelectedVehicle(vehicle)}>{vehicle.name}</Button>
+                        <Button
+                            onClick={() => {
+                                createTasksForSelectedVehicle(vehicle);
+                                return setSelectedVehicle(vehicle);
+                            }}
+                        >
+                            {vehicle.name}
+                        </Button>
                         <EditVehicleModal onSubmitted={onEditedVehicleSubmitted} initialValue={vehicle}>
                             <Button size="sm">
                                 <EditIcon />
@@ -96,7 +127,17 @@ export default function Home({}) {
                 <div>
                     <p>Details zu {selectedVehicle.name} </p>
                     <Heading size="lg">Inspektionsmuster</Heading>
-                    <PatternOverview vehicle={selectedVehicle} />
+                    <PatternOverview vehicle={selectedVehicle} patternChanged={loadVehicles} />
+                    <Heading size="lg">Aufgaben</Heading>
+                    {selectedVehicleTasks ? (
+                        <div>
+                            {selectedVehicleTasks?.map((task) => (
+                                <div key={task.name}>{task.name}</div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
                 </div>
             ) : (
                 <div></div>

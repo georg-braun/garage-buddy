@@ -2,6 +2,7 @@ import { Form, Field, Formik } from 'formik';
 import { FormControl, FormLabel, FormErrorMessage, Input, Button } from '@chakra-ui/react';
 import React from 'react';
 import IPattern from '@/lib/vehicle/IPattern';
+import PatternFactory from '@/lib/vehicle/PatternFactory';
 
 interface IPatternListEntryProps {
     pattern: IPattern;
@@ -11,15 +12,15 @@ interface IPatternListEntryProps {
 
 export default function PatternListEntry(props: IPatternListEntryProps): JSX.Element {
     function validateName(value) {
-        if (!value) return 'Ein Inspektionsname ist notwendig';
+        if (!value) console.log('Ein Inspektionsname ist notwendig');
     }
 
     function validateKilometerInterval(value) {
-        if (!value) return 'Ein Kilometer Intervall ist notwendig';
+        if (!value) console.log('Ein Kilometer Intervall ist notwendig');
     }
 
     function validateTimeInterval(value) {
-        if (!value) return 'Ein Zeit Intervall ist notwendig';
+        if (!value) console.log('Ein Zeit Intervall ist notwendig');
     }
 
     return (

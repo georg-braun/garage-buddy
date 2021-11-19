@@ -30,6 +30,8 @@ class InMemVehicleRepository implements IVehicleRepository {
     }
 
     updateVehicleAsync(vehicle: IVehicle): Promise<void> {
+        const index = this.vehicles.findIndex((_) => _.id === vehicle.id);
+        this.vehicles.splice(index, 1, vehicle);
         return Promise.resolve();
     }
     deleteVehicleAsync(vehicleId: string): Promise<void> {
