@@ -89,6 +89,29 @@ class InMemVehicleRepository implements IVehicleRepository {
         vehicle.patterns.push(pattern);
         return Promise.resolve();
     }
+
+    deleteMaintenanceAsync(vehicleId: string, maintenanceId: string): Promise<void> {
+        const vehicle = this.getVehicle(vehicleId);
+        if (!vehicle) return Promise.resolve();
+
+        const index = vehicle.performedMaintenances.findIndex((_) => _.id === maintenanceId);
+        vehicle.performedMaintenances.splice(index, 1);
+        return Promise.resolve();
+    }
+
+    deletePatternAsync(vehicleId: string, patternId: string): Promise<void> {
+        // get vehicle
+        const vehicle = this.getVehicle(vehicleId);
+        if (!vehicle) return Promise.resolve();
+
+        // don't delete if a maintenance is associated with the pattern id
+        const maintenanceWithPatternIdExists = vehicle.performedMaintenances.some((_) => _.patternId === patternId);
+        if (maintenanceWithPatternIdExists) return Promise.resolve();
+
+        const index = vehicle.patterns.findIndex((_) => _.id === patternId);
+        vehicle.patterns.splice(index, 1);
+        return Promise.resolve();
+    }
 }
 
 export default new InMemVehicleRepository();
