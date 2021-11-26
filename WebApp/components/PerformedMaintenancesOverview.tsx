@@ -17,7 +17,7 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
     createPatternIdNameDict();
 
     async function onNewMaintenanceSubmitted(performedMaintenance: IPerformedMaintenance): Promise<void> {
-        VehicleRepository.addMaintenance(props.vehicle.id, performedMaintenance);
+        VehicleRepository.addMaintenanceAsync(props.vehicle.id, performedMaintenance);
         props.onDataChanged();
     }
 

@@ -74,11 +74,20 @@ class InMemVehicleRepository implements IVehicleRepository {
         return { ...this.vehicles.find((_) => _.id === vehicleId) };
     }
 
-    addMaintenance(vehicleId: string, performedMaintenance: IPerformedMaintenance) {
+    addMaintenanceAsync(vehicleId: string, performedMaintenance: IPerformedMaintenance): Promise<void> {
         const vehicle = this.getVehicle(vehicleId);
         const maintenance = { ...performedMaintenance };
         maintenance.id = uuid();
         vehicle.performedMaintenances.push(maintenance);
+        return Promise.resolve();
+    }
+
+    addPatternAsync(vehicleId: string, newPattern: IPattern): Promise<void> {
+        const vehicle = this.getVehicle(vehicleId);
+        const pattern = { ...newPattern };
+        pattern.id = uuid();
+        vehicle.patterns.push(pattern);
+        return Promise.resolve();
     }
 }
 
