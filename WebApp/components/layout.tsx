@@ -26,7 +26,7 @@ export default function Layout({ children }) {
                 <meta name="twitter:card" content="summary_large_image" />
             </Head>
 
-            {auth.user ? (
+            {auth?.user ? (
                 <Flex direction="column">
                     <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="space-between" p="3">
                         <Flex>
@@ -52,7 +52,7 @@ export default function Layout({ children }) {
                     <Flex direction="column" alignItems="center" padding="10" rounded="6">
                         <Heading>Garage</Heading>
                         <Heading mb="8">Buddy</Heading>
-                        <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => auth.signinWithGitHub()}>
+                        <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => auth?.signinWithGitHub()}>
                             Login
                         </Button>
                     </Flex>

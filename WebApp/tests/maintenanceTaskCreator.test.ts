@@ -1,5 +1,5 @@
 import IPattern from '../lib/vehicle/IPattern';
-import IFinishedMaintenance from '../lib/maintenance/IDoneMaintenance';
+import IFinishedMaintenance from '../lib/vehicle/IPerformedMaintenance';
 import createTask from '../lib/maintenance/maintenanceTaskCreator';
 import IVehicle from '../lib/vehicle/IVehicle';
 import { VehicleBuilder } from '@/lib/vehicleBuilder';

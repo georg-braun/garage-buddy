@@ -1,3 +1,4 @@
+import IPerformedMaintenance from '@/lib/vehicle/IPerformedMaintenance';
 import { v4 as uuid } from 'uuid';
 
 import IVehicle from '@/lib/vehicle/IVehicle';
@@ -10,6 +11,7 @@ export class VehicleBuilder {
         kilometer: 0,
         userId: '0',
         patterns: [],
+        performedMaintenances: [],
     };
 
     build(): IVehicle {
@@ -23,6 +25,11 @@ export class VehicleBuilder {
 
     withPattern(pattern: IPattern): VehicleBuilder {
         this.vehicle.patterns.push(pattern);
+        return this;
+    }
+
+    withPerformedMaintenances(maintenance: IPerformedMaintenance) {
+        this.vehicle.performedMaintenances.push(maintenance);
         return this;
     }
 
@@ -44,6 +51,11 @@ export class PatternBuilder {
         return this.pattern;
     }
 
+    withPatternId(id: string): PatternBuilder {
+        this.pattern.id = id;
+        return this;
+    }
+
     withName(name: string): PatternBuilder {
         this.pattern.name = name;
         return this;
@@ -56,6 +68,33 @@ export class PatternBuilder {
 
     withTimeInterval(days: number): PatternBuilder {
         this.pattern.timeIntervalInDays = days;
+        return this;
+    }
+}
+
+export class PerformedMaintenanceBuilder {
+    maintenance: IPerformedMaintenance = {
+        patternId: '0',
+        date: '',
+        kilometer: 0,
+    };
+
+    build(): IPerformedMaintenance {
+        return this.maintenance;
+    }
+
+    withPatternId(id: string): PerformedMaintenanceBuilder {
+        this.maintenance.patternId = id;
+        return this;
+    }
+
+    withDate(date: string): PerformedMaintenanceBuilder {
+        this.maintenance.date = date;
+        return this;
+    }
+
+    withKilometer(kilometer: number): PerformedMaintenanceBuilder {
+        this.maintenance.kilometer = kilometer;
         return this;
     }
 }

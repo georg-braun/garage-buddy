@@ -1,13 +1,13 @@
 import IVehicle from '../vehicle/IVehicle';
 import IPattern from '../vehicle/IPattern';
 import IMaintenanceTask from './IMaintenanceTask';
-import IDoneMaintenance from './IDoneMaintenance';
+import IPerformedMaintenance from '../vehicle/IPerformedMaintenance';
 import moment from 'moment';
 
 export default function createTask(
     vehicle: IVehicle,
     pattern: IPattern,
-    lastDoneMaintenance: IDoneMaintenance,
+    lastDoneMaintenance: IPerformedMaintenance,
     kmScope: number,
     timeScopeInDays: number,
     todayAsString: string,

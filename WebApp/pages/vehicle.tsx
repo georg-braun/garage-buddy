@@ -11,9 +11,10 @@ import PatternOverview from '@/components/PatternOverview';
 import VehicleRepository from '@/lib/repository/VehicleRepository';
 import IVehicleRepository from '@/lib/repository/IVehicleRepository';
 import createTask from '@/lib/maintenance/maintenanceTaskCreator';
-import IDoneMaintenance from '@/lib/maintenance/IDoneMaintenance';
+import IPerformedMaintenance from '@/lib/vehicle/IPerformedMaintenance';
 import FinishedMaintenanceBuilder from '@/lib/maintenance/doneMaintenanceBuilder';
 import IMaintenanceTask from '@/lib/maintenance/IMaintenanceTask';
+import PerformedMaintenancesOverview from '@/components/PerformedMaintenancesOverview';
 
 export default function Home({}) {
     const auth = useAuth();
@@ -34,7 +35,7 @@ export default function Home({}) {
         const allTasks: IMaintenanceTask[] = [];
         const patterns = vehicle.patterns;
 
-        const lastDoneTask: IDoneMaintenance = new FinishedMaintenanceBuilder()
+        const lastDoneTask: IPerformedMaintenance = new FinishedMaintenanceBuilder()
             .withDate('1992-10-15')
             .withKilometer(0)
             .build();
@@ -138,6 +139,7 @@ export default function Home({}) {
                     ) : (
                         <div></div>
                     )}
+                    <PerformedMaintenancesOverview vehicle={selectedVehicle} onDataChanged={loadVehicles}/>
                 </div>
             ) : (
                 <div></div>

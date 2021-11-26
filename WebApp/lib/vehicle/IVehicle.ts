@@ -1,3 +1,4 @@
+import IPerformedMaintenance from '@/lib/vehicle/IPerformedMaintenance';
 import IPattern from '@/lib/vehicle/IPattern';
 
 interface IVehicle {
@@ -6,6 +7,7 @@ interface IVehicle {
     name: string;
     kilometer: number;
     patterns: IPattern[];
+    performedMaintenances: IPerformedMaintenance[];
 }
 
 export default IVehicle;

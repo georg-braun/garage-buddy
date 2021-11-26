@@ -2,8 +2,9 @@ import { v4 as uuid } from 'uuid';
 
 import IPattern from '@/lib/vehicle/IPattern';
 import IVehicle from '@/lib/vehicle/IVehicle';
-import { PatternBuilder, VehicleBuilder } from '../vehicleBuilder';
+import { PatternBuilder, VehicleBuilder, PerformedMaintenanceBuilder } from '../vehicleBuilder';
 import IVehicleRepository from './IVehicleRepository';
+import IPerformedMaintenance from '../vehicle/IPerformedMaintenance';
 class InMemVehicleRepository implements IVehicleRepository {
     vehicles: IVehicle[] = [];
 
@@ -12,17 +13,35 @@ class InMemVehicleRepository implements IVehicleRepository {
             .withName('Opel')
             .withKilometer(4000)
             .withPattern(
-                new PatternBuilder().withName('Luftfilter').withKilometerInterval(5000).withTimeInterval(365).build(),
+                new PatternBuilder()
+                    .withPatternId('0')
+                    .withName('Luftfilter')
+                    .withKilometerInterval(5000)
+                    .withTimeInterval(365)
+                    .build(),
             )
             .build();
         const secondVehicle = new VehicleBuilder()
             .withName('Audi')
             .withKilometer(8000)
             .withPattern(
-                new PatternBuilder().withName('Luftfilter').withKilometerInterval(10000).withTimeInterval(365).build(),
+                new PatternBuilder()
+                    .withPatternId('0')
+                    .withName('Luftfilter')
+                    .withKilometerInterval(10000)
+                    .withTimeInterval(365)
+                    .build(),
             )
             .withPattern(
-                new PatternBuilder().withName('Ölwechsel').withKilometerInterval(5000).withTimeInterval(365).build(),
+                new PatternBuilder()
+                    .withPatternId('1')
+                    .withName('Ölwechsel')
+                    .withKilometerInterval(5000)
+                    .withTimeInterval(365)
+                    .build(),
+            )
+            .withPerformedMaintenances(
+                new PerformedMaintenanceBuilder().withPatternId('0').withKilometer(5000).withDate('2021-11-25').build(),
             )
             .build();
         this.vehicles.push(firstVehicle);
@@ -49,6 +68,17 @@ class InMemVehicleRepository implements IVehicleRepository {
         if (vehicle.id == '0') vehicle.id = uuid();
         this.vehicles.push(vehicle);
         return Promise.resolve();
+    }
+
+    getVehicle(vehicleId: string): IVehicle {
+        return { ...this.vehicles.find((_) => _.id === vehicleId) };
+    }
+
+    addMaintenance(vehicleId: string, performedMaintenance: IPerformedMaintenance) {
+        const vehicle = this.getVehicle(vehicleId);
+        const maintenance = { ...performedMaintenance };
+        maintenance.id = uuid();
+        vehicle.performedMaintenances.push(maintenance);
     }
 }
 

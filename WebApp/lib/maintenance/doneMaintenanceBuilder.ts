@@ -1,13 +1,13 @@
-import IDoneMaintenance from "@/lib/maintenance/IDoneMaintenance"
+import IPerformedMaintenance from "@/lib/vehicle/IPerformedMaintenance"
 
 export default class FinishedMaintenanceBuilder {
-    maintenance: IDoneMaintenance = {
+    maintenance: IPerformedMaintenance = {
         date: '2020-01-01',
         kilometer: 0,
         patternId: '0',
     };
 
-    build(): IDoneMaintenance {
+    build(): IPerformedMaintenance {
         return this.maintenance;
     }
 
