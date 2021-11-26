@@ -29,12 +29,28 @@ interface VehicleEditModalProps {
     vehicle: IVehicle;
 }
 
+interface FormFields {
+    patternId: string;
+    kilometer: number;
+    date: string;
+}
+
 export default function PerformedMaintenanceEditModal(props: VehicleEditModalProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const initialValue =
-        props.initialValue ?? new PerformedMaintenanceBuilder().withDate('2021-11-26').withKilometer(4000).build();
+    const [patternIdSelection, setPatternIdSelection] = useState('0');
+
+    const initialValue: FormFields = {
+        patternId: props.initialValue?.patternId ?? '0',
+        kilometer: props.initialValue?.kilometer ?? 0,
+        date: props.initialValue?.date ?? '2021-11-25',
+    };
+
     const initialRef = React.useRef(); /* focused element on modal show */
+
+    function handlePatternIdChange(event) {
+        setPatternIdSelection(event.target.value);
+    }
 
     return (
         <>
@@ -49,7 +65,11 @@ export default function PerformedMaintenanceEditModal(props: VehicleEditModalPro
                         <Formik
                             initialValues={initialValue}
                             onSubmit={async (values, actions) => {
-                                const maintenance: IPerformedMaintenance = values as IPerformedMaintenance;
+                                // selections are handled different => use extra value
+                                const maintenance: IPerformedMaintenance = {
+                                    ...values,
+                                    patternId: patternIdSelection,
+                                } as IPerformedMaintenance;
                                 await props.onSubmitted(maintenance);
 
                                 onClose();
@@ -59,9 +79,12 @@ export default function PerformedMaintenanceEditModal(props: VehicleEditModalPro
                                 <Form>
                                     <Field name="patternId">
                                         {({ field, form }) => (
-                                            <FormControl isInvalid={form.errors.name && form.touched.name}>
-                                                <FormLabel htmlFor="patternId">Inspektion</FormLabel>
-                                              <Select source>
+                                            <FormControl>
+                                                <Select
+                                                    value={patternIdSelection}
+                                                    onChange={handlePatternIdChange}
+                                                    multiple={false}
+                                                >
                                                     {props.vehicle.patterns.map((_) => (
                                                         <option key={_.id} value={_.id}>
                                                             {_.name} {_.id}
