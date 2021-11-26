@@ -1,10 +1,10 @@
 import { v4 as uuid } from 'uuid';
 
-import IPattern from '@/lib/vehicle/IPattern';
-import IVehicle from '@/lib/vehicle/IVehicle';
-import { PatternBuilder, VehicleBuilder, PerformedMaintenanceBuilder } from '../vehicleBuilder';
-import IVehicleRepository from './IVehicleRepository';
-import IPerformedMaintenance from '../vehicle/IPerformedMaintenance';
+import IPattern from '@/lib/domain/IPattern';
+import IVehicle from '@/lib/domain/IVehicle';
+import { PatternBuilder, VehicleBuilder, PerformedMaintenanceBuilder } from '../application/builder/vehicleBuilder';
+import IVehicleRepository from '../application/IVehicleRepository';
+import IPerformedMaintenance from '../domain/IPerformedMaintenance';
 class InMemVehicleRepository implements IVehicleRepository {
     vehicles: IVehicle[] = [];
 

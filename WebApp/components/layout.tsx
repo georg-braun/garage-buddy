@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/lib/infrastructure/auth';
 import styles from './layout.module.css';
 import Link from 'next/link';
 import { Flex, Heading } from '@chakra-ui/layout';

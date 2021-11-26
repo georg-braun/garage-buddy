@@ -1,4 +1,4 @@
-import IVehicle from '@/lib/vehicle/IVehicle';
+import IVehicle from '@/lib/domain/IVehicle';
 
 export default interface IVehicleRepository {
     getVehiclesForUserAsync(userId: string): Promise<IVehicle[]>;

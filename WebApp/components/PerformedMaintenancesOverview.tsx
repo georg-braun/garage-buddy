@@ -1,10 +1,10 @@
 import { Button } from '@chakra-ui/button';
 import { Heading } from '@chakra-ui/layout';
 
-import IVehicle from '@/lib/vehicle/IVehicle';
+import IVehicle from '@/lib/domain/IVehicle';
 import PerformedMaintenanceEditModal from './PerformedMaintenanceEditModal';
-import IPerformedMaintenance from '@/lib/vehicle/IPerformedMaintenance';
-import VehicleRepository from '@/lib/repository/VehicleRepository';
+import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
+import VehicleRepository from '@/lib/application/VehicleRepository';
 
 interface IPerformedMaintenancesOverviewProps {
     vehicle: IVehicle;

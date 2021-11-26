@@ -1,8 +1,8 @@
-import IPattern from '../lib/vehicle/IPattern';
-import IFinishedMaintenance from '../lib/vehicle/IPerformedMaintenance';
-import createTask from '../lib/maintenance/maintenanceTaskCreator';
-import IVehicle from '../lib/vehicle/IVehicle';
-import { VehicleBuilder } from '@/lib/vehicleBuilder';
+import IPattern from '../lib/domain/IPattern';
+import IFinishedMaintenance from '../lib/domain/IPerformedMaintenance';
+import createTask from '../lib/application/maintenanceTaskGeneration/maintenanceTaskGenerator';
+import IVehicle from '../lib/domain/IVehicle';
+import { VehicleBuilder } from '@/lib/application/builder/vehicleBuilder';
 
 test('adds 1 + 2 to equal 3', () => {
     const x = 3;

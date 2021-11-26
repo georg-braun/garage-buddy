@@ -17,10 +17,10 @@ import {
 import { Form, Field, Formik } from 'formik';
 import React, { useState, useEffect } from 'react';
 
-import IVehicle from '@/lib/vehicle/IVehicle';
-import { PerformedMaintenanceBuilder, VehicleBuilder } from '@/lib/vehicleBuilder';
-import IPerformedMaintenance from '@/lib/vehicle/IPerformedMaintenance';
-import IPattern from '@/lib/vehicle/IPattern';
+import IVehicle from '@/lib/domain/IVehicle';
+import { PerformedMaintenanceBuilder, VehicleBuilder } from '@/lib/application/builder/vehicleBuilder';
+import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
+import IPattern from '@/lib/domain/IPattern';
 
 interface VehicleEditModalProps {
     children: JSX.Element;

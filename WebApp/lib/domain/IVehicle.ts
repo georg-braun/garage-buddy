@@ -1,5 +1,5 @@
-import IPerformedMaintenance from '@/lib/vehicle/IPerformedMaintenance';
-import IPattern from '@/lib/vehicle/IPattern';
+import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
+import IPattern from '@/lib/domain/IPattern';
 
 interface IVehicle {
     id: string;

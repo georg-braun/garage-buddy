@@ -1,8 +1,8 @@
-import IPerformedMaintenance from '@/lib/vehicle/IPerformedMaintenance';
+import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
 import { v4 as uuid } from 'uuid';
 
-import IVehicle from '@/lib/vehicle/IVehicle';
-import IPattern from '@/lib/vehicle/IPattern';
+import IVehicle from '@/lib/domain/IVehicle';
+import IPattern from '@/lib/domain/IPattern';
 
 export class VehicleBuilder {
     vehicle: IVehicle = {

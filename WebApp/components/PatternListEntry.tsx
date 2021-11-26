@@ -1,8 +1,8 @@
 import { Form, Field, Formik } from 'formik';
 import { FormControl, FormLabel, FormErrorMessage, Input, Button } from '@chakra-ui/react';
 import React from 'react';
-import IPattern from '@/lib/vehicle/IPattern';
-import PatternFactory from '@/lib/vehicle/PatternFactory';
+import IPattern from '@/lib/domain/IPattern';
+import PatternFactory from '@/lib/application/PatternFactory';
 
 interface IPatternListEntryProps {
     pattern: IPattern;

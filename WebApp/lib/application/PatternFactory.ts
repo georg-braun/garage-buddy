@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import IPattern from '@/lib/vehicle/IPattern';
+import IPattern from '@/lib/domain/IPattern';
 
 class PatternFactory {
     create(): IPattern {

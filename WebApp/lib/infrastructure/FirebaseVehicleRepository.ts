@@ -1,9 +1,9 @@
 import { getFirestore, collection, doc, setDoc, query, where, getDocs, deleteDoc, updateDoc } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
-import firebaseApp from '@/lib/firebase';
+import firebaseApp from '@/lib/infrastructure/firebase';
 
-import IVehicle from '@/lib/vehicle/IVehicle';
-import IVehicleRepository from './IVehicleRepository';
+import IVehicle from '@/lib/domain/IVehicle';
+import IVehicleRepository from '../application/IVehicleRepository';
 
 class FirebaseVehicleRepository implements IVehicleRepository {
     db = getFirestore(firebaseApp);

@@ -1,7 +1,7 @@
-import IVehicle from '../vehicle/IVehicle';
-import IPattern from '../vehicle/IPattern';
-import IMaintenanceTask from './IMaintenanceTask';
-import IPerformedMaintenance from '../vehicle/IPerformedMaintenance';
+import IVehicle from '../../domain/IVehicle';
+import IPattern from '../../domain/IPattern';
+import IMaintenanceTask from '../../domain/IMaintenanceTask';
+import IPerformedMaintenance from '../../domain/IPerformedMaintenance';
 import moment from 'moment';
 
 export default function createTask(

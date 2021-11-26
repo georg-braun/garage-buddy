@@ -17,8 +17,8 @@ import { Form, Field, Formik } from 'formik';
 import React from 'react';
 
 import { useAuth } from '@/lib/auth';
-import IVehicle from '@/lib/vehicle/IVehicle';
-import { VehicleBuilder } from '@/lib/vehicleBuilder';
+import IVehicle from '@/lib/domain/IVehicle';
+import { VehicleBuilder } from '@/lib/application/builder/vehicleBuilder';
 
 interface VehicleEditModalProps {
     children: JSX.Element;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 
-import IVehicle from '@/lib/vehicle/IVehicle';
+import IVehicle from '@/lib/domain/IVehicle';
 import PatternEntry from '@/components/PatternListEntry';
-import VehicleRepository from '@/lib/repository/VehicleRepository';
-import IVehicleRepository from '@/lib/repository/IVehicleRepository';
-import PatternFactory from '@/lib/vehicle/PatternFactory';
+import VehicleRepository from '@/lib/application/VehicleRepository';
+import IVehicleRepository from '@/lib/application/IVehicleRepository';
+import PatternFactory from '@/lib/application/PatternFactory';
 
 interface IPatternOverviewProps {
     vehicle: IVehicle;

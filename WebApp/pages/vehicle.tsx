@@ -4,16 +4,16 @@ import { Button } from '@chakra-ui/button';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 import Layout from '@/components/layout';
-import { useAuth } from '@/lib/auth';
-import IVehicle from '@/lib/vehicle/IVehicle';
+import { useAuth } from '@/lib/infrastructure/auth';
+import IVehicle from '@/lib/domain/IVehicle';
 import EditVehicleModal from '@/components/VehicleEditModalProps';
 import PatternOverview from '@/components/PatternOverview';
-import VehicleRepository from '@/lib/repository/VehicleRepository';
-import IVehicleRepository from '@/lib/repository/IVehicleRepository';
-import createTask from '@/lib/maintenance/maintenanceTaskCreator';
-import IPerformedMaintenance from '@/lib/vehicle/IPerformedMaintenance';
-import FinishedMaintenanceBuilder from '@/lib/maintenance/doneMaintenanceBuilder';
-import IMaintenanceTask from '@/lib/maintenance/IMaintenanceTask';
+import VehicleRepository from '@/lib/application/VehicleRepository';
+import IVehicleRepository from '@/lib/application/IVehicleRepository';
+import createTask from '@/lib/application/maintenanceTaskGeneration/maintenanceTaskGenerator';
+import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
+import FinishedMaintenanceBuilder from '@/lib/application/builder/doneMaintenanceBuilder';
+import IMaintenanceTask from '@/lib/domain/IMaintenanceTask';
 import PerformedMaintenancesOverview from '@/components/PerformedMaintenancesOverview';
 
 export default function Home({}) {
@@ -139,7 +139,7 @@ export default function Home({}) {
                     ) : (
                         <div></div>
                     )}
-                    <PerformedMaintenancesOverview vehicle={selectedVehicle} onDataChanged={loadVehicles}/>
+                    <PerformedMaintenancesOverview vehicle={selectedVehicle} onDataChanged={loadVehicles} />
                 </div>
             ) : (
                 <div></div>
