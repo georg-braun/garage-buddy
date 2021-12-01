@@ -82,11 +82,20 @@ class InMemVehicleRepository implements IVehicleRepository {
         return Promise.resolve();
     }
 
-    addPatternAsync(vehicleId: string, newPattern: IPattern): Promise<void> {
+    addPatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
         const vehicle = this.getVehicle(vehicleId);
-        const pattern = { ...newPattern };
+        const patternCopy = { ...pattern, id: uuid() };
+        vehicle.patterns.push(patternCopy);
+        return Promise.resolve();
+    }
+
+    updatePatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
+        const vehicle = this.getVehicle(vehicleId);
+        const patternCopy = { ...pattern };
         pattern.id = uuid();
-        vehicle.patterns.push(pattern);
+        const existingPatternIndex = vehicle.patterns.findIndex((_) => _.id === pattern.id);
+        if (!existingPatternIndex) return Promise.resolve();
+        vehicle.patterns.splice(existingPatternIndex, 1, patternCopy);
         return Promise.resolve();
     }
 

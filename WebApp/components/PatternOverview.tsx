@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
+import { Button } from '@chakra-ui/button';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 import IVehicle from '@/lib/domain/IVehicle';
-import PatternEntry from '@/components/PatternListEntry';
+
 import VehicleRepository from '@/lib/application/VehicleRepository';
 import IVehicleRepository from '@/lib/application/IVehicleRepository';
-import PatternFactory from '@/lib/application/PatternFactory';
+
+import PatternEditModal from './PatternEditModal';
 
 interface IPatternOverviewProps {
     vehicle: IVehicle;
@@ -20,29 +22,32 @@ export default function PatternOverview(props: IPatternOverviewProps) {
             {props.vehicle.patterns?.map((pattern) => (
                 <div key={pattern.id}>
                     <span>
-                        {pattern.id}
-                        <PatternEntry
-                            pattern={pattern}
-                            submitText="Aktualisieren"
-                            onSubmit={async (pattern) => console.log(pattern)}
-                        />
+                        {pattern.id} {pattern.name} {pattern.kilometerInterval} {pattern.timeIntervalInDays}
+                        <PatternEditModal
+                            initialValue={pattern}
+                            onSubmitted={async (pattern) => {
+                                // id generation shouldn't be made in view. move it to app logic
+                                const newPattern = { ...pattern };
+                                await vehicleRepository.updatePatternAsync(props.vehicle.id, newPattern);
+                                props.patternChanged();
+                            }}
+                        >
+                            <Button size="sm">
+                                <EditIcon />
+                            </Button>
+                        </PatternEditModal>
                     </span>
                 </div>
             ))}
-            ---
-            <PatternEntry
-                pattern={PatternFactory.create()}
-                submitText="Hinzufügen"
-                onSubmit={async (pattern) => {
-                    // id generation shouldn't be made in view. move it to app logic
+            <PatternEditModal
+                onSubmitted={async (pattern) => {
                     const newPattern = { ...pattern };
-                    newPattern.id = uuid();
-                    const vehicle = props.vehicle;
-                    vehicle.patterns.push(newPattern);
-                    await vehicleRepository.updateVehicleAsync(vehicle);
+                    await vehicleRepository.addPatternAsync(props.vehicle.id, newPattern);
                     props.patternChanged();
                 }}
-            />
+            >
+                <Button>+</Button>
+            </PatternEditModal>
         </div>
     );
 }
