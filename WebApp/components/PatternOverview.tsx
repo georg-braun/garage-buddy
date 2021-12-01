@@ -36,6 +36,19 @@ export default function PatternOverview(props: IPatternOverviewProps) {
                                 <EditIcon />
                             </Button>
                         </PatternEditModal>
+                        {props.vehicle.performedMaintenances.some((_) => _.patternId === pattern.id) ? (
+                            <></>
+                        ) : (
+                            <Button
+                                size="sm"
+                                onClick={async () => {
+                                    await vehicleRepository.deletePatternAsync(props.vehicle.id, pattern.id);
+                                    props.patternChanged();
+                                }}
+                            >
+                                <DeleteIcon />
+                            </Button>
+                        )}
                     </span>
                 </div>
             ))}
