@@ -13,12 +13,7 @@ class InMemVehicleRepository implements IVehicleRepository {
             .withName('Opel')
             .withKilometer(4000)
             .withPattern(
-                new PatternBuilder()
-                    .withPatternId('0')
-                    .withName('Luftfilter')
-                    .withKilometerInterval(5000)
-                    .withTimeInterval(365)
-                    .build(),
+                new PatternBuilder().withName('Luftfilter').withKilometerInterval(5000).withTimeInterval(365).build(),
             )
             .build();
         const secondVehicle = new VehicleBuilder()
@@ -33,12 +28,7 @@ class InMemVehicleRepository implements IVehicleRepository {
                     .build(),
             )
             .withPattern(
-                new PatternBuilder()
-                    .withPatternId('1')
-                    .withName('Ölwechsel')
-                    .withKilometerInterval(5000)
-                    .withTimeInterval(365)
-                    .build(),
+                new PatternBuilder().withName('Ölwechsel').withKilometerInterval(5000).withTimeInterval(365).build(),
             )
             .withPerformedMaintenances(
                 new PerformedMaintenanceBuilder().withPatternId('0').withKilometer(5000).withDate('2021-11-25').build(),

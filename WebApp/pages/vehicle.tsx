@@ -10,7 +10,7 @@ import EditVehicleModal from '@/components/VehicleEditModalProps';
 import PatternOverview from '@/components/PatternOverview';
 import VehicleRepository from '@/lib/application/VehicleRepository';
 import IVehicleRepository from '@/lib/application/IVehicleRepository';
-import createTask from '@/lib/application/maintenanceTaskGeneration/maintenanceTaskGenerator';
+import createTasksFromPattern from '@/lib/application/maintenanceTaskGeneration/maintenanceTaskGenerator';
 import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
 import FinishedMaintenanceBuilder from '@/lib/application/builder/doneMaintenanceBuilder';
 import IMaintenanceTask from '@/lib/domain/IMaintenanceTask';
@@ -29,19 +29,14 @@ export default function Home({}) {
         loadVehicles();
     }, [auth]);
 
-    function createTasksForSelectedVehicle(vehicle: IVehicle) {
+    function refreshTasksForSelectedVehicle(vehicle: IVehicle) {
         if (!vehicle) return;
 
         const allTasks: IMaintenanceTask[] = [];
         const patterns = vehicle.patterns;
 
-        const lastDoneTask: IPerformedMaintenance = new FinishedMaintenanceBuilder()
-            .withDate('1992-10-15')
-            .withKilometer(0)
-            .build();
-
         patterns.forEach((pattern) => {
-            const tasksForCurrentPattern = createTask(vehicle, pattern, lastDoneTask, 50000, 365, '2021-11-19');
+            const tasksForCurrentPattern = createTasksFromPattern(vehicle, pattern, 50000, 365, new Date());
             allTasks.push(...tasksForCurrentPattern);
         });
 
@@ -85,6 +80,11 @@ export default function Home({}) {
         setVehicles(vehiclesFromRepo);
     }
 
+    async function refresh() {
+        await loadVehicles();
+        if (selectedVehicle) refreshTasksForSelectedVehicle(selectedVehicle);
+    }
+
     async function onNewVehicleSubmitted(vehicle: IVehicle): Promise<void> {
         await addVehicle(vehicle);
         await loadVehicles();
@@ -104,9 +104,10 @@ export default function Home({}) {
             {vehicles?.map((vehicle) => (
                 <div key={vehicle.id}>
                     <span>
+                        {vehicle.id}
                         <Button
                             onClick={() => {
-                                createTasksForSelectedVehicle(vehicle);
+                                refreshTasksForSelectedVehicle(vehicle);
                                 return setSelectedVehicle(vehicle);
                             }}
                         >
@@ -128,18 +129,19 @@ export default function Home({}) {
                 <div>
                     <p>Details zu {selectedVehicle.name} </p>
                     <Heading size="lg">Inspektionsmuster</Heading>
-                    <PatternOverview vehicle={selectedVehicle} patternChanged={loadVehicles} />
+                    <PatternOverview vehicle={selectedVehicle} onDataChanged={refresh} />
                     <Heading size="lg">Aufgaben</Heading>
+                    <p>in den nächsten 5000 Kilometer oder im nächsten Jahr</p>
                     {selectedVehicleTasks ? (
-                        <div>
+                        <ul>
                             {selectedVehicleTasks?.map((task) => (
-                                <div key={task.name}>{task.name}</div>
+                                <li key={task.name}>{task.name}</li>
                             ))}
-                        </div>
+                        </ul>
                     ) : (
                         <div></div>
                     )}
-                    <PerformedMaintenancesOverview vehicle={selectedVehicle} onDataChanged={loadVehicles} />
+                    <PerformedMaintenancesOverview vehicle={selectedVehicle} onDataChanged={refresh} />
                 </div>
             ) : (
                 <div></div>

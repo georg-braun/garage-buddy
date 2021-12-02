@@ -43,7 +43,7 @@ export default function PerformedMaintenanceEditModal(props: VehicleEditModalPro
     const initialValue: FormFields = {
         patternId: props.initialValue?.patternId ?? '0',
         kilometer: props.initialValue?.kilometer ?? 0,
-        date: props.initialValue?.date ?? '2021-11-25',
+        date: props.initialValue?.date.toISOString().slice(0, 10) ?? new Date().toISOString().slice(0, 10),
     };
 
     const initialRef = React.useRef(); /* focused element on modal show */
@@ -66,9 +66,12 @@ export default function PerformedMaintenanceEditModal(props: VehicleEditModalPro
                             initialValues={initialValue}
                             onSubmit={async (values, actions) => {
                                 // selections are handled different => use extra value
+                                const formDate = new Date(values.date);
+                                const formKilometer = values.kilometer;
                                 const maintenance: IPerformedMaintenance = {
-                                    ...values,
                                     patternId: patternIdSelection,
+                                    date: formDate,
+                                    kilometer: formKilometer,
                                 } as IPerformedMaintenance;
                                 await props.onSubmitted(maintenance);
 

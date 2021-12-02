@@ -3,7 +3,7 @@ import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
 export default class FinishedMaintenanceBuilder {
     maintenance: IPerformedMaintenance = {
         id: '0',
-        date: '2020-01-01',
+        date: new Date(),
         kilometer: 0,
         patternId: '0',
     };
@@ -18,7 +18,7 @@ export default class FinishedMaintenanceBuilder {
     }
 
     withDate(date: string): FinishedMaintenanceBuilder {
-        this.maintenance.date = date;
+        this.maintenance.date = new Date(date);
         return this;
     }
 }

@@ -11,7 +11,7 @@ import PatternEditModal from './PatternEditModal';
 
 interface IPatternOverviewProps {
     vehicle: IVehicle;
-    patternChanged: () => void;
+    onDataChanged: () => void;
 }
 
 export default function PatternOverview(props: IPatternOverviewProps) {
@@ -29,7 +29,7 @@ export default function PatternOverview(props: IPatternOverviewProps) {
                                 // id generation shouldn't be made in view. move it to app logic
                                 const newPattern = { ...pattern };
                                 await vehicleRepository.updatePatternAsync(props.vehicle.id, newPattern);
-                                props.patternChanged();
+                                props.onDataChanged();
                             }}
                         >
                             <Button size="sm">
@@ -43,7 +43,7 @@ export default function PatternOverview(props: IPatternOverviewProps) {
                                 size="sm"
                                 onClick={async () => {
                                     await vehicleRepository.deletePatternAsync(props.vehicle.id, pattern.id);
-                                    props.patternChanged();
+                                    props.onDataChanged();
                                 }}
                             >
                                 <DeleteIcon />
@@ -56,7 +56,7 @@ export default function PatternOverview(props: IPatternOverviewProps) {
                 onSubmitted={async (pattern) => {
                     const newPattern = { ...pattern };
                     await vehicleRepository.addPatternAsync(props.vehicle.id, newPattern);
-                    props.patternChanged();
+                    props.onDataChanged();
                 }}
             >
                 <Button>+</Button>

@@ -16,7 +16,6 @@ import {
 import { Form, Field, Formik } from 'formik';
 import React from 'react';
 
-import { useAuth } from '@/lib/auth';
 import IVehicle from '@/lib/domain/IVehicle';
 import { VehicleBuilder } from '@/lib/application/builder/vehicleBuilder';
 

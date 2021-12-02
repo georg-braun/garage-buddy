@@ -4,6 +4,8 @@ import firebaseApp from '@/lib/infrastructure/firebase';
 
 import IVehicle from '@/lib/domain/IVehicle';
 import IVehicleRepository from '../application/IVehicleRepository';
+import IPattern from '../domain/IPattern';
+import IPerformedMaintenance from '../domain/IPerformedMaintenance';
 
 class FirebaseVehicleRepository implements IVehicleRepository {
     db = getFirestore(firebaseApp);
@@ -50,6 +52,22 @@ class FirebaseVehicleRepository implements IVehicleRepository {
     async deleteVehicleAsync(vehicleId: string): Promise<void> {
         console.log('delete vehicle with id: ' + vehicleId);
         return await deleteDoc(doc(this.db, 'vehicles', vehicleId));
+    }
+
+    addMaintenanceAsync(vehicleId: string, performedMaintenance: IPerformedMaintenance): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    deleteMaintenanceAsync(vehicleId: string, maintenanceId: string): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    addPatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    updatePatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
+        throw new Error('Method not implemented.');
+    }
+    deletePatternAsync(vehicleId: string, patternId: string): Promise<void> {
+        throw new Error('Method not implemented.');
     }
 }
 

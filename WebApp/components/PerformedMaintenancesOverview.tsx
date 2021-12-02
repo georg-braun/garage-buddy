@@ -44,7 +44,7 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
                 <div>
                     {vehicle.performedMaintenances.map((_) => (
                         <div key={_.id}>
-                            {getPatternNameById(_.patternId)} (ID: {_.patternId}) {_.date}
+                            {getPatternNameById(_.patternId)} (ID: {_.patternId}) {_.date.toString()}
                             <Button onClick={() => deleteMaintenanceAsync(vehicle.id, _.id)} size="sm">
                                 <DeleteIcon />
                             </Button>

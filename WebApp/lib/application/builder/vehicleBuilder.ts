@@ -74,8 +74,9 @@ export class PatternBuilder {
 
 export class PerformedMaintenanceBuilder {
     maintenance: IPerformedMaintenance = {
+        id: uuid(),
         patternId: '0',
-        date: '',
+        date: new Date(),
         kilometer: 0,
     };
 
@@ -89,7 +90,7 @@ export class PerformedMaintenanceBuilder {
     }
 
     withDate(date: string): PerformedMaintenanceBuilder {
-        this.maintenance.date = date;
+        this.maintenance.date = new Date(date);
         return this;
     }
 
