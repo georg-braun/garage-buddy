@@ -38,7 +38,7 @@ interface FormFields {
 export default function PerformedMaintenanceEditModal(props: VehicleEditModalProps) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [patternIdSelection, setPatternIdSelection] = useState('0');
+    const [patternIdSelection, setPatternIdSelection] = useState(props.vehicle.patterns[0].id ?? '0');
 
     const initialValue: FormFields = {
         patternId: props.initialValue?.patternId ?? '0',

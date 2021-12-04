@@ -77,7 +77,12 @@ export default function Home({}) {
 
         console.log('try to get user vehicles');
         const vehiclesFromRepo = await vehicleRepository.getVehiclesForUserAsync(auth.user.uid);
+        //const newVehicles = [...vehiclesFromRepo];
         setVehicles(vehiclesFromRepo);
+
+        if (!selectedVehicle) return;
+        const updatedSelectedVehicle = vehiclesFromRepo.find(_ => _.id === selectedVehicle.id)        
+        setSelectedVehicle(updatedSelectedVehicle)        
     }
 
     async function refresh() {

@@ -28,7 +28,7 @@ export default function PatternOverview(props: IPatternOverviewProps) {
                             onSubmitted={async (pattern) => {
                                 // id generation shouldn't be made in view. move it to app logic
                                 const newPattern = { ...pattern };
-                                await vehicleRepository.updatePatternAsync(props.vehicle.id, newPattern);
+                                await vehicleRepository.updatePatternAsync(props.vehicle, newPattern);
                                 props.onDataChanged();
                             }}
                         >
@@ -42,7 +42,7 @@ export default function PatternOverview(props: IPatternOverviewProps) {
                             <Button
                                 size="sm"
                                 onClick={async () => {
-                                    await vehicleRepository.deletePatternAsync(props.vehicle.id, pattern.id);
+                                    await vehicleRepository.deletePatternAsync(props.vehicle.id, pattern);
                                     props.onDataChanged();
                                 }}
                             >

@@ -79,35 +79,35 @@ class InMemVehicleRepository implements IVehicleRepository {
         return Promise.resolve();
     }
 
-    updatePatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
-        const vehicle = this.getVehicle(vehicleId);
+    updatePatternAsync(vehicle: IVehicle, pattern: IPattern): Promise<void> {
+        const vehicleFromRepo = this.getVehicle(vehicle.id);
         const patternCopy = { ...pattern };
         pattern.id = uuid();
-        const existingPatternIndex = vehicle.patterns.findIndex((_) => _.id === pattern.id);
+        const existingPatternIndex = vehicleFromRepo.patterns.findIndex((_) => _.id === pattern.id);
         if (!existingPatternIndex) return Promise.resolve();
-        vehicle.patterns.splice(existingPatternIndex, 1, patternCopy);
+        vehicleFromRepo.patterns.splice(existingPatternIndex, 1, patternCopy);
         return Promise.resolve();
     }
 
-    deleteMaintenanceAsync(vehicleId: string, maintenanceId: string): Promise<void> {
+    deleteMaintenanceAsync(vehicleId: string, maintenance: IPerformedMaintenance): Promise<void> {
         const vehicle = this.getVehicle(vehicleId);
         if (!vehicle) return Promise.resolve();
 
-        const index = vehicle.performedMaintenances.findIndex((_) => _.id === maintenanceId);
+        const index = vehicle.performedMaintenances.findIndex((_) => _.id === maintenance.id);
         vehicle.performedMaintenances.splice(index, 1);
         return Promise.resolve();
     }
 
-    deletePatternAsync(vehicleId: string, patternId: string): Promise<void> {
+    deletePatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
         // get vehicle
         const vehicle = this.getVehicle(vehicleId);
         if (!vehicle) return Promise.resolve();
 
         // don't delete if a maintenance is associated with the pattern id
-        const maintenanceWithPatternIdExists = vehicle.performedMaintenances.some((_) => _.patternId === patternId);
+        const maintenanceWithPatternIdExists = vehicle.performedMaintenances.some((_) => _.patternId === pattern.id);
         if (maintenanceWithPatternIdExists) return Promise.resolve();
 
-        const index = vehicle.patterns.findIndex((_) => _.id === patternId);
+        const index = vehicle.patterns.findIndex((_) => _.id === pattern.id);
         vehicle.patterns.splice(index, 1);
         return Promise.resolve();
     }

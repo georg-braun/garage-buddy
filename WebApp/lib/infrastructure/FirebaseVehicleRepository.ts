@@ -1,4 +1,16 @@
-import { getFirestore, collection, doc, setDoc, query, where, getDocs, deleteDoc, updateDoc } from 'firebase/firestore';
+import {
+    getFirestore,
+    collection,
+    doc,
+    setDoc,
+    query,
+    where,
+    getDocs,
+    deleteDoc,
+    updateDoc,
+    arrayUnion,
+    arrayRemove,
+} from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
 import firebaseApp from '@/lib/infrastructure/firebase';
 
@@ -54,20 +66,56 @@ class FirebaseVehicleRepository implements IVehicleRepository {
         return await deleteDoc(doc(this.db, 'vehicles', vehicleId));
     }
 
-    addMaintenanceAsync(vehicleId: string, performedMaintenance: IPerformedMaintenance): Promise<void> {
-        throw new Error('Method not implemented.');
+    async addMaintenanceAsync(vehicleId: string, performedMaintenance: IPerformedMaintenance): Promise<void> {
+        try {
+            performedMaintenance.id = uuid();
+            const docRef = doc(this.db, 'vehicles', vehicleId);
+            await updateDoc(docRef, {
+                performedMaintenances: arrayUnion(performedMaintenance),
+            });
+        } catch (e) {}
     }
-    deleteMaintenanceAsync(vehicleId: string, maintenanceId: string): Promise<void> {
-        throw new Error('Method not implemented.');
+
+    async deleteMaintenanceAsync(vehicleId: string, maintenance: IPerformedMaintenance): Promise<void> {
+        try {
+            const docRef = doc(this.db, 'vehicles', vehicleId);
+            await updateDoc(docRef, {
+                performedMaintenances: arrayRemove(maintenance),
+            });
+        } catch (e) {}
     }
-    addPatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
-        throw new Error('Method not implemented.');
+
+    async addPatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
+        try {
+            pattern.id = uuid();
+            const docRef = doc(this.db, 'vehicles', vehicleId);
+            await updateDoc(docRef, {
+                patterns: arrayUnion(pattern),
+            });
+        } catch (e) {}
     }
-    updatePatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
-        throw new Error('Method not implemented.');
+    async updatePatternAsync(vehicle: IVehicle, pattern: IPattern): Promise<void> {
+        try {
+            // replace pattern in vehicle object
+            const vehicleCopy = { ...vehicle };
+            const updatedPatternCopy = { ...pattern };
+            const existingPatternIndex = vehicle.patterns.findIndex((_) => _.id === pattern.id);
+
+            vehicleCopy.patterns.splice(existingPatternIndex, 1, updatedPatternCopy);
+            // and update the whole vehicle
+            this.updateVehicleAsync(vehicleCopy);
+        } catch (e) {
+            console.error('Error: ', e);
+        }
     }
-    deletePatternAsync(vehicleId: string, patternId: string): Promise<void> {
-        throw new Error('Method not implemented.');
+
+    async deletePatternAsync(vehicleId: string, pattern: IPattern): Promise<void> {
+        try {
+            const docRef = doc(this.db, 'vehicles', vehicleId);
+            await updateDoc(docRef, {
+                patterns: arrayRemove(pattern),
+            });
+        } catch (e) {}
     }
 }
 

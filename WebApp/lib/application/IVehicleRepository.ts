@@ -7,9 +7,9 @@ export default interface IVehicleRepository {
     createVehicleAsync(vehicle: IVehicle): Promise<void>;
     updateVehicleAsync(vehicle: IVehicle): Promise<void>;
     deleteVehicleAsync(vehicleId: string): Promise<void>;
-    addMaintenanceAsync(vehicleId: string, performedMaintenance: IPerformedMaintenance): Promise<void>;
-    deleteMaintenanceAsync(vehicleId: string, maintenanceId: string): Promise<void>;
+    addMaintenanceAsync(vehicleId: string, maintenance: IPerformedMaintenance): Promise<void>;
+    deleteMaintenanceAsync(vehicleId: string, maintenance: IPerformedMaintenance): Promise<void>;
     addPatternAsync(vehicleId: string, pattern: IPattern): Promise<void>;
-    updatePatternAsync(vehicleId: string, pattern: IPattern): Promise<void>;
-    deletePatternAsync(vehicleId: string, patternId: string): Promise<void>;
+    updatePatternAsync(vehicle: IVehicle, pattern: IPattern): Promise<void>;
+    deletePatternAsync(vehicleId: string, pattern: IPattern): Promise<void>;
 }

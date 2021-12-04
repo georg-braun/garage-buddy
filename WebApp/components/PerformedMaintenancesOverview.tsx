@@ -32,8 +32,8 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
         return patternNameById[patternId] ? patternNameById[patternId] : 'Unbekannte Wartung';
     }
 
-    async function deleteMaintenanceAsync(vehicleId: string, maintenanceId: string) {
-        await VehicleRepository.deleteMaintenanceAsync(vehicleId, maintenanceId);
+    async function deleteMaintenanceAsync(vehicleId: string, maintenance: IPerformedMaintenance) {
+        await VehicleRepository.deleteMaintenanceAsync(vehicleId, maintenance);
         props.onDataChanged();
     }
 
@@ -45,7 +45,7 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
                     {vehicle.performedMaintenances.map((_) => (
                         <div key={_.id}>
                             {getPatternNameById(_.patternId)} (ID: {_.patternId}) {_.date.toString()}
-                            <Button onClick={() => deleteMaintenanceAsync(vehicle.id, _.id)} size="sm">
+                            <Button onClick={() => deleteMaintenanceAsync(vehicle.id, _)} size="sm">
                                 <DeleteIcon />
                             </Button>
                         </div>
