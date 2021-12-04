@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { getAuth, signInWithRedirect, signOut, onAuthStateChanged, GithubAuthProvider } from '@firebase/auth';
 import firebaseApp from './firebase';
-import { createUser } from './db';
+import { createUser } from './userDb';
 
 const provider = new GithubAuthProvider();
 

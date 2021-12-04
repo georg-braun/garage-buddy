@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/lib/infrastructure/auth';
 import styles from './layout.module.css';
 import Link from 'next/link';
 import { Flex, Heading } from '@chakra-ui/layout';
@@ -26,13 +26,23 @@ export default function Layout({ children }) {
                 <meta name="twitter:card" content="summary_large_image" />
             </Head>
 
-            {auth.user ? (
+            {auth?.user ? (
                 <Flex direction="column">
-                    <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="flex-end" p="3">
-                        🧔 {auth.user.email}
-                        <Button colorScheme="blue" size="xs" ml="5" onClick={(e) => auth.signout()}>
-                            Sign Out
-                        </Button>
+                    <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="space-between" p="3">
+                        <Flex>
+                            <Flex mr="5">
+                                <Link href="/">🏠 Startseite</Link>
+                            </Flex>
+                            <Flex>
+                                <Link href="/vehicle">🚘 Fahrzeuge</Link>
+                            </Flex>
+                        </Flex>
+                        <Flex>
+                            🧔 {auth.user.email}
+                            <Button colorScheme="blue" size="xs" ml="5" onClick={(e) => auth.signout()}>
+                                Sign Out
+                            </Button>
+                        </Flex>
                     </Flex>
 
                     <div>{children}</div>
@@ -42,7 +52,7 @@ export default function Layout({ children }) {
                     <Flex direction="column" alignItems="center" padding="10" rounded="6">
                         <Heading>Garage</Heading>
                         <Heading mb="8">Buddy</Heading>
-                        <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => auth.signinWithGitHub()}>
+                        <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => auth?.signinWithGitHub()}>
                             Login
                         </Button>
                     </Flex>

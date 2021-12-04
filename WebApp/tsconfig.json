@@ -27,7 +27,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "lib/auth.js"  ],
+, "lib/infrastructure/auth.js"  ],
   "exclude": [
     "node_modules",
   ]

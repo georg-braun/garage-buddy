@@ -4,30 +4,47 @@ import { Button } from '@chakra-ui/button';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 import Layout from '@/components/layout';
-import { useAuth } from '@/lib/auth';
-import IVehicle from '@/lib/vehicle/IVehicle';
-import {
-    getVehiclesForUser,
-    createVehicle as dbCreateVehicle,
-    deleteVehicle as dbDeleteVehicle,
-    updateVehicle as dbUpdateVehicle,
-} from '@/lib/db';
+import { useAuth } from '@/lib/infrastructure/auth';
+import IVehicle from '@/lib/domain/IVehicle';
 import EditVehicleModal from '@/components/VehicleEditModalProps';
+import PatternOverview from '@/components/PatternOverview';
+import VehicleRepository from '@/lib/application/VehicleRepository';
+import IVehicleRepository from '@/lib/application/IVehicleRepository';
+import createTasksFromPattern from '@/lib/application/maintenanceTaskGeneration/maintenanceTaskGenerator';
+import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
+import FinishedMaintenanceBuilder from '@/lib/application/builder/doneMaintenanceBuilder';
+import IMaintenanceTask from '@/lib/domain/IMaintenanceTask';
+import PerformedMaintenancesOverview from '@/components/PerformedMaintenancesOverview';
 
 export default function Home({}) {
     const auth = useAuth();
+    const vehicleRepository: IVehicleRepository = VehicleRepository;
 
-    const exampleVehicle: IVehicle = { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 39000 };
-    const [vehicles, setVehicles] = useState<IVehicle[]>([
-        { id: '0', name: 'Demo-Fahrzeug', userId: '2', kilometer: 39000 },
-    ]);
+    const [vehicles, setVehicles] = useState<IVehicle[]>([]);
+
+    const [selectedVehicle, setSelectedVehicle] = useState<IVehicle>();
+    const [selectedVehicleTasks, setSelectedVehicleTasks] = useState<IMaintenanceTask[]>();
 
     useEffect(() => {
         loadVehicles();
     }, [auth]);
 
+    function refreshTasksForSelectedVehicle(vehicle: IVehicle) {
+        if (!vehicle) return;
+
+        const allTasks: IMaintenanceTask[] = [];
+        const patterns = vehicle.patterns;
+
+        patterns.forEach((pattern) => {
+            const tasksForCurrentPattern = createTasksFromPattern(vehicle, pattern, 50000, 365, new Date());
+            allTasks.push(...tasksForCurrentPattern);
+        });
+
+        setSelectedVehicleTasks(allTasks);
+    }
+
     async function deleteVehicle(vehicleId: string) {
-        await dbDeleteVehicle(vehicleId);
+        await vehicleRepository.deleteVehicleAsync(vehicleId);
         await loadVehicles();
     }
 
@@ -39,7 +56,7 @@ export default function Home({}) {
 
         vehicle.userId = userId;
 
-        await dbCreateVehicle(vehicle);
+        await vehicleRepository.createVehicleAsync(vehicle);
     }
 
     async function updateVehicle(vehicle: IVehicle) {
@@ -49,7 +66,7 @@ export default function Home({}) {
         }
 
         vehicle.userId = userId;
-        await dbUpdateVehicle(vehicle);
+        await vehicleRepository.updateVehicleAsync(vehicle);
     }
 
     async function loadVehicles() {
@@ -59,8 +76,18 @@ export default function Home({}) {
         }
 
         console.log('try to get user vehicles');
-        const dbVehicles = await getVehiclesForUser(auth.user.uid);
-        setVehicles(dbVehicles);
+        const vehiclesFromRepo = await vehicleRepository.getVehiclesForUserAsync(auth.user.uid);
+        //const newVehicles = [...vehiclesFromRepo];
+        setVehicles(vehiclesFromRepo);
+
+        if (!selectedVehicle) return;
+        const updatedSelectedVehicle = vehiclesFromRepo.find(_ => _.id === selectedVehicle.id)        
+        setSelectedVehicle(updatedSelectedVehicle)        
+    }
+
+    async function refresh() {
+        await loadVehicles();
+        if (selectedVehicle) refreshTasksForSelectedVehicle(selectedVehicle);
     }
 
     async function onNewVehicleSubmitted(vehicle: IVehicle): Promise<void> {
@@ -75,14 +102,22 @@ export default function Home({}) {
 
     return (
         <Layout>
-            <EditVehicleModal onSubmitted={onNewVehicleSubmitted} initialValue={exampleVehicle}>
+            <EditVehicleModal onSubmitted={onNewVehicleSubmitted}>
                 <Button>+</Button>
             </EditVehicleModal>
 
             {vehicles?.map((vehicle) => (
                 <div key={vehicle.id}>
                     <span>
-                        {vehicle.name} ({vehicle.id}) von {vehicle.userId}
+                        {vehicle.id}
+                        <Button
+                            onClick={() => {
+                                refreshTasksForSelectedVehicle(vehicle);
+                                return setSelectedVehicle(vehicle);
+                            }}
+                        >
+                            {vehicle.name}
+                        </Button>
                         <EditVehicleModal onSubmitted={onEditedVehicleSubmitted} initialValue={vehicle}>
                             <Button size="sm">
                                 <EditIcon />
@@ -94,6 +129,28 @@ export default function Home({}) {
                     </span>
                 </div>
             ))}
+
+            {selectedVehicle ? (
+                <div>
+                    <p>Details zu {selectedVehicle.name} </p>
+                    <Heading size="lg">Inspektionsmuster</Heading>
+                    <PatternOverview vehicle={selectedVehicle} onDataChanged={refresh} />
+                    <Heading size="lg">Aufgaben</Heading>
+                    <p>in den nächsten 5000 Kilometer oder im nächsten Jahr</p>
+                    {selectedVehicleTasks ? (
+                        <ul>
+                            {selectedVehicleTasks?.map((task) => (
+                                <li key={task.name}>{task.name}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <div></div>
+                    )}
+                    <PerformedMaintenancesOverview vehicle={selectedVehicle} onDataChanged={refresh} />
+                </div>
+            ) : (
+                <div></div>
+            )}
         </Layout>
     );
 }
