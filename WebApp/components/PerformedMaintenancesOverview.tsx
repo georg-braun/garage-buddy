@@ -39,7 +39,6 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
 
     return (
         <div>
-            <Heading>Erledigte Inspektionen</Heading>
             {vehicle ? (
                 <div>
                     {vehicle.performedMaintenances.map((_) => (
@@ -56,7 +55,9 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
             )}
             {vehicle.patterns.length > 0 ? (
                 <PerformedMaintenanceEditModal vehicle={vehicle} onSubmitted={onNewMaintenanceSubmitted}>
-                    <Button>+</Button>
+                    <Button borderRadius="0" height="7">
+                        +
+                    </Button>
                 </PerformedMaintenanceEditModal>
             ) : (
                 <div>Lege ein Insepektionsmuster an um eine Inspektion als erledigt einzutragen.</div>

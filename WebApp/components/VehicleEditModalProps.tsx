@@ -38,7 +38,7 @@ export default function VehicleEditModal(props: VehicleEditModalProps) {
             <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Create your account</ModalHeader>
+                    <ModalHeader>Fahrzeug Details</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Formik

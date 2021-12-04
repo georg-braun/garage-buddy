@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useAuth } from '@/lib/infrastructure/auth';
 import styles from './layout.module.css';
 import Link from 'next/link';
-import { Flex, Heading, Spacer, Wrap, WrapItem } from '@chakra-ui/layout';
+import { Center, Flex, Heading, Spacer, Wrap, WrapItem } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 
 export const siteTitle = 'Inspektionen';
@@ -43,8 +43,9 @@ export default function Layout({ children }) {
                             </Button>
                         </Flex>
                     </Flex>
-
+                    <Center padding="10">
                     <div>{children}</div>
+                    </Center>
                 </Flex>
             ) : (
                 <Flex h="100vh" alignItems="center" justifyContent="center">
