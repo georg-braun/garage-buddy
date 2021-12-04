@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useAuth } from '@/lib/infrastructure/auth';
 import styles from './layout.module.css';
 import Link from 'next/link';
-import { Flex, Heading } from '@chakra-ui/layout';
+import { Flex, Heading, Spacer, Wrap, WrapItem } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 
 export const siteTitle = 'Inspektionen';
@@ -28,17 +28,16 @@ export default function Layout({ children }) {
 
             {auth?.user ? (
                 <Flex direction="column">
-                    <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="space-between" p="3">
-                        <Flex>
-                            <Flex mr="5">
-                                <Link href="/">🏠 Startseite</Link>
-                            </Flex>
-                            <Flex>
-                                <Link href="/vehicle">🚘 Fahrzeuge</Link>
-                            </Flex>
+                    <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="space-between" p="3" wrap="wrap">
+                        <Flex mr="5">
+                            <Link href="/">🏠 Startseite</Link>
                         </Flex>
                         <Flex>
-                            🧔 {auth.user.email}
+                            <Link href="/vehicle">🚘 Fahrzeuge</Link>
+                        </Flex>
+                        <Spacer />
+                        <Flex>🧔 {auth.user.email}</Flex>
+                        <Flex>
                             <Button colorScheme="blue" size="xs" ml="5" onClick={(e) => auth.signout()}>
                                 Sign Out
                             </Button>
