@@ -37,7 +37,7 @@ export default function Home({}) {
         const patterns = vehicle.patterns;
 
         patterns.forEach((pattern) => {
-            const tasksForCurrentPattern = createTasksFromPattern(vehicle, pattern, 50000, 365, new Date());
+            const tasksForCurrentPattern = createTasksFromPattern(vehicle, pattern, 5000, 30, new Date());
             allTasks.push(...tasksForCurrentPattern);
         });
 
@@ -120,6 +120,9 @@ export default function Home({}) {
                                         {vehicle.name}
                                     </Button>
                                 </Box>
+                                <Center fontWeight="light" fontSize="small">
+                                    {vehicle.kilometer} km
+                                </Center>
 
                                 <Center>
                                     <EditVehicleModal onSubmitted={onEditedVehicleSubmitted} initialValue={vehicle}>
@@ -154,8 +157,7 @@ export default function Home({}) {
                     </Box>
                     <Box mt="10">
                         <Heading size="lg">Aufgaben</Heading>
-
-                        <Box fontWeight="thin">in den nächsten 5000 Kilometer oder im nächsten Jahr</Box>
+                        <Box fontWeight="thin">in den nächsten 500 Kilometer / 30 Tagen</Box>
                         {selectedVehicleTasks ? (
                             <Box mt="15px">
                                 {selectedVehicleTasks?.map((task) => (
@@ -169,7 +171,7 @@ export default function Home({}) {
                         )}
                     </Box>
                     <Box mt="10">
-                        <Heading>Erledigte Inspektionen</Heading>
+                        <Heading size="lg">Erledigte Inspektionen</Heading>
                         <PerformedMaintenancesOverview vehicle={selectedVehicle} onDataChanged={refresh} />
                     </Box>
                 </div>

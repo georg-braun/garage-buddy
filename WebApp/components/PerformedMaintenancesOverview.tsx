@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/button';
-import { Heading } from '@chakra-ui/layout';
+import { Box, Flex, Heading } from '@chakra-ui/layout';
 import { DeleteIcon } from '@chakra-ui/icons';
 
 import IVehicle from '@/lib/domain/IVehicle';
@@ -42,12 +42,26 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
             {vehicle ? (
                 <div>
                     {vehicle.performedMaintenances.map((_) => (
-                        <div key={_.id}>
-                            {getPatternNameById(_.patternId)} (ID: {_.patternId}) {_.date.toString()}
-                            <Button onClick={() => deleteMaintenanceAsync(vehicle.id, _)} size="sm">
-                                <DeleteIcon />
-                            </Button>
-                        </div>
+                        <Box key={_.id} mt="15px" _hover={{ bg: 'gray.100' }}>
+                            <Flex justifyContent="space-between">
+                                <Box>
+                                    <Box fontWeight="semibold">{getPatternNameById(_.patternId)}</Box>
+                                    <Box fontSize="xs" textTransform="uppercase">
+                                        {_.date.toLocaleDateString()} • {_.kilometer} km
+                                    </Box>
+                                </Box>
+
+                                <Box alignItems="center">
+                                    <Button
+                                        size="xs"
+                                        background="transparent"
+                                        onClick={() => deleteMaintenanceAsync(vehicle.id, _)}
+                                    >
+                                        <DeleteIcon />
+                                    </Button>
+                                </Box>
+                            </Flex>
+                        </Box>
                     ))}
                 </div>
             ) : (
@@ -55,7 +69,7 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
             )}
             {vehicle.patterns.length > 0 ? (
                 <PerformedMaintenanceEditModal vehicle={vehicle} onSubmitted={onNewMaintenanceSubmitted}>
-                    <Button borderRadius="0" height="7">
+                    <Button mt="15px" borderRadius="0" height="7">
                         +
                     </Button>
                 </PerformedMaintenanceEditModal>
