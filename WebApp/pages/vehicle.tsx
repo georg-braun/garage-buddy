@@ -11,8 +11,6 @@ import PatternOverview from '@/components/PatternOverview';
 import VehicleRepository from '@/lib/application/VehicleRepository';
 import IVehicleRepository from '@/lib/application/IVehicleRepository';
 import createTasksFromPattern from '@/lib/application/maintenanceTaskGeneration/maintenanceTaskGenerator';
-import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
-import FinishedMaintenanceBuilder from '@/lib/application/builder/doneMaintenanceBuilder';
 import IMaintenanceTask from '@/lib/domain/IMaintenanceTask';
 import PerformedMaintenancesOverview from '@/components/PerformedMaintenancesOverview';
 import { Center } from '@chakra-ui/react';

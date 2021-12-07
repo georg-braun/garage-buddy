@@ -44,7 +44,7 @@ export default function Layout({ children }) {
                         </Flex>
                     </Flex>
                     <Center padding="10">
-                    <div>{children}</div>
+                        <div>{children}</div>
                     </Center>
                 </Flex>
             ) : (
