@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { getAuth, signInWithRedirect, signOut, onAuthStateChanged, GithubAuthProvider } from '@firebase/auth';
+import {
+    getAuth,
+    signInWithRedirect,
+    signOut,
+    onAuthStateChanged,
+    GithubAuthProvider,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    connectAuthEmulator,
+} from '@firebase/auth';
 import firebaseApp from './firebase';
 import { createUser } from './userDb';
 
@@ -46,11 +55,44 @@ function useProvideAuth() {
         }
     };
 
-    const signinWithGitHub = () => {
+    const registerUserWithEmailAndPassword = async (email, password) => {
         setLoading(true);
 
+        let errorMessage = '';
         const auth = getAuth(firebaseApp);
-        return signInWithRedirect(auth, provider).then((response) => handleUser(response.user));
+        //connectAuthEmulator(auth, 'localhost:9099');
+        //return signInWithRedirect(auth, provider).then((response) => handleUser(response.user));
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                //handleUser(user);
+            })
+            .catch((error) => {
+                console.log(error.code + error.message);
+                errorMessage = error.message;
+            });
+
+        return Promise.resolve(errorMessage);
+    };
+
+    const loginUserWithEmailAndPassword = async (email, password) => {
+        setLoading(true);
+
+        let errorMessage = '';
+        const auth = getAuth(firebaseApp);
+        //connectAuthEmulator(auth, 'localhost:9099');
+        //return signInWithRedirect(auth, provider).then((response) => handleUser(response.user));
+        await signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                //handleUser(user);
+            })
+            .catch((error) => {
+                console.log(error.code + error.message);
+                errorMessage = error.message;
+            });
+
+        return Promise.resolve(errorMessage);
     };
 
     const signout = () => {
@@ -68,7 +110,8 @@ function useProvideAuth() {
     return {
         user,
         loading,
-        signinWithGitHub,
+        registerUserWithEmailAndPassword,
+        loginUserWithEmailAndPassword,
         signout,
     };
 }
