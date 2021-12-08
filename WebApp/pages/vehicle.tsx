@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Circle, Flex, Heading } from '@chakra-ui/layout';
+import { useState, useEffect } from 'react';
+import { Box, Flex, Heading } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 

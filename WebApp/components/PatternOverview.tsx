@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { Button } from '@chakra-ui/button';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
@@ -8,7 +7,7 @@ import VehicleRepository from '@/lib/application/VehicleRepository';
 import IVehicleRepository from '@/lib/application/IVehicleRepository';
 
 import PatternEditModal from './PatternEditModal';
-import { Box, Center, Flex, Spacer } from '@chakra-ui/layout';
+import { Box, Flex } from '@chakra-ui/layout';
 
 interface IPatternOverviewProps {
     vehicle: IVehicle;

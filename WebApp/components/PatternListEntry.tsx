@@ -1,8 +1,6 @@
 import { Form, Field, Formik } from 'formik';
-import { FormControl, FormLabel, FormErrorMessage, Input, Button } from '@chakra-ui/react';
-import React from 'react';
+import { Input, Button } from '@chakra-ui/react';
 import IPattern from '@/lib/domain/IPattern';
-import PatternFactory from '@/lib/application/PatternFactory';
 
 interface IPatternListEntryProps {
     pattern: IPattern;
@@ -36,10 +34,10 @@ export default function PatternListEntry(props: IPatternListEntryProps): JSX.Ele
                 {(formikProps) => (
                     <Form>
                         <Field name="name" validate={validateName}>
-                            {({ field, form }) => <Input {...field} id="name" placeholder="name" maxWidth="200" />}
+                            {({ field }) => <Input {...field} id="name" placeholder="name" maxWidth="200" />}
                         </Field>
                         <Field name="kilometerInterval" validate={validateKilometerInterval}>
-                            {({ field, form }) => (
+                            {({ field }) => (
                                 <Input
                                     {...field}
                                     type="number"
@@ -51,7 +49,7 @@ export default function PatternListEntry(props: IPatternListEntryProps): JSX.Ele
                         </Field>
 
                         <Field name="timeIntervalInDays" validate={validateTimeInterval}>
-                            {({ field, form }) => (
+                            {({ field }) => (
                                 <Input
                                     {...field}
                                     type="number"

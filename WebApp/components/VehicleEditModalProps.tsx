@@ -10,7 +10,6 @@ import {
     ModalCloseButton,
     FormLabel,
     Input,
-    ModalFooter,
     FormErrorMessage,
 } from '@chakra-ui/react';
 import { Form, Field, Formik } from 'formik';
@@ -43,13 +42,13 @@ export default function VehicleEditModal(props: VehicleEditModalProps) {
                     <ModalBody pb={6}>
                         <Formik
                             initialValues={initialValue}
-                            onSubmit={async (values, actions) => {
+                            onSubmit={async (values) => {
                                 const vehicle: IVehicle = values as IVehicle;
                                 await props.onSubmitted(vehicle);
                                 onClose();
                             }}
                         >
-                            {(props) => (
+                            {() => (
                                 <Form>
                                     <Field name="name">
                                         {({ field, form }) => (

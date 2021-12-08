@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/button';
-import { Box, Flex, Heading } from '@chakra-ui/layout';
+import { Box, Flex } from '@chakra-ui/layout';
 import { DeleteIcon } from '@chakra-ui/icons';
 
 import IVehicle from '@/lib/domain/IVehicle';

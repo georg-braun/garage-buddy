@@ -1,7 +1,4 @@
-import { getFirestore, collection, doc, setDoc, query, where, getDocs, deleteDoc, updateDoc } from 'firebase/firestore';
-import { v4 as uuid } from 'uuid';
-
-import IVehicle from '@/lib/domain/IVehicle';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import firebaseApp from './firebase';
 
 const db = getFirestore(firebaseApp);

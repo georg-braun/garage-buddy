@@ -10,17 +10,14 @@ import {
     ModalCloseButton,
     FormLabel,
     Input,
-    ModalFooter,
     FormErrorMessage,
     Select,
 } from '@chakra-ui/react';
 import { Form, Field, Formik } from 'formik';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import IVehicle from '@/lib/domain/IVehicle';
-import { PerformedMaintenanceBuilder, VehicleBuilder } from '@/lib/application/builder/vehicleBuilder';
 import IPerformedMaintenance from '@/lib/domain/IPerformedMaintenance';
-import IPattern from '@/lib/domain/IPattern';
 
 interface VehicleEditModalProps {
     children: JSX.Element;
@@ -64,7 +61,7 @@ export default function PerformedMaintenanceEditModal(props: VehicleEditModalPro
                     <ModalBody pb={6}>
                         <Formik
                             initialValues={initialValue}
-                            onSubmit={async (values, actions) => {
+                            onSubmit={async (values) => {
                                 // selections are handled different => use extra value
                                 const formDate = new Date(values.date);
                                 const formKilometer = values.kilometer;
@@ -78,10 +75,10 @@ export default function PerformedMaintenanceEditModal(props: VehicleEditModalPro
                                 onClose();
                             }}
                         >
-                            {(formProps) => (
+                            {() => (
                                 <Form>
                                     <Field name="patternId">
-                                        {({ field, form }) => (
+                                        {({form }) => (
                                             <FormControl>
                                                 <Select
                                                     value={patternIdSelection}

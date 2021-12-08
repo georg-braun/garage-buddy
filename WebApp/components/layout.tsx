@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useAuth } from '@/lib/infrastructure/auth';
 import styles from './layout.module.css';
 import Link from 'next/link';
-import { Center, Flex, Heading, Spacer, Wrap, WrapItem } from '@chakra-ui/layout';
+import { Center, Flex, Heading, Spacer } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 
 export const siteTitle = 'Inspektionen';
@@ -38,7 +38,7 @@ export default function Layout({ children }) {
                         <Spacer />
                         <Flex>🧔 {auth.user.email}</Flex>
                         <Flex>
-                            <Button colorScheme="blue" size="xs" ml="5" onClick={(e) => auth.signout()}>
+                            <Button colorScheme="blue" size="xs" ml="5" onClick={() => auth.signout()}>
                                 Sign Out
                             </Button>
                         </Flex>
@@ -52,7 +52,7 @@ export default function Layout({ children }) {
                     <Flex direction="column" alignItems="center" padding="10" rounded="6">
                         <Heading>Garage</Heading>
                         <Heading mb="8">Buddy</Heading>
-                        <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => auth?.signinWithGoogle()}>
+                        <Button size="sm" colorScheme="blue" w="8rem" onClick={() => auth?.signinWithGoogle()}>
                             Login
                         </Button>
                     </Flex>

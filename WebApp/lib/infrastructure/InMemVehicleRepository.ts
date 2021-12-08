@@ -49,6 +49,7 @@ class InMemVehicleRepository implements IVehicleRepository {
         return Promise.resolve();
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getVehiclesForUserAsync(userId: string): Promise<IVehicle[]> {
         // ignore user id for local development
         return Promise.resolve([...this.vehicles]);
