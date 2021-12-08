@@ -1,10 +1,8 @@
 import Head from 'next/head';
-import { useState } from 'react';
 import { useAuth } from '@/lib/infrastructure/auth';
 import styles from './layout.module.css';
 import Link from 'next/link';
-import { Center, Flex, Heading, Spacer, Stack } from '@chakra-ui/layout';
-import { InputGroup, Input, InputRightElement } from '@chakra-ui/react';
+import { Center, Flex, Heading, Spacer, Wrap, WrapItem } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 
 export const siteTitle = 'Inspektionen';
@@ -12,8 +10,6 @@ export const siteTitle = 'Inspektionen';
 // eslint-disable-next-line react/prop-types
 export default function Layout({ children }) {
     const auth = useAuth();
-
-    const [authenticationMessage, setAuthenticationMessage] = useState('');
 
     return (
         <div className={styles.container}>
@@ -56,69 +52,12 @@ export default function Layout({ children }) {
                     <Flex direction="column" alignItems="center" padding="10" rounded="6">
                         <Heading>Garage</Heading>
                         <Heading mb="8">Buddy</Heading>
-                        <SignUpInForm
-                            onSignUp={async (email: string, password: string) => {
-                                const resultMessage = await auth?.registerUserWithEmailAndPassword(email, password);
-                                setAuthenticationMessage(resultMessage);
-                            }}
-                            onSignIn={async (email: string, password: string) => {
-                                const resultMessage = await auth?.registerUserWithEmailAndPassword(email, password);
-                                setAuthenticationMessage(resultMessage);
-                            }}
-                        />
-                        <Flex mt="10px">{authenticationMessage}</Flex>
+                        <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => auth?.signinWithGoogle()}>
+                            Login
+                        </Button>
                     </Flex>
                 </Flex>
             )}
         </div>
-    );
-}
-
-interface SignUpInFormProps {
-    onSignIn: (mail: string, password: string) => void;
-    onSignUp: (mail: string, password: string) => void;
-}
-
-function SignUpInForm(props: SignUpInFormProps) {
-    const [show, setShow] = useState(false);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const handleClick = () => setShow(!show);
-
-    return (
-        <Stack>
-            <Input
-                pr="4.5rem"
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(event) => {
-                    setEmail(event.target.value);
-                }}
-            />
-            <InputGroup size="md">
-                <Input
-                    pr="4.5rem"
-                    type={show ? 'text' : 'password'}
-                    placeholder="Passwort eingeben"
-                    onChange={(event) => {
-                        setPassword(event.target.value);
-                    }}
-                />
-                <InputRightElement width="5.5rem" mr="2">
-                    <Button h="1.75rem" size="sm" onClick={handleClick}>
-                        {show ? 'Ausblenden' : 'Anzeigen'}
-                    </Button>
-                </InputRightElement>
-            </InputGroup>
-            <Flex>
-                <Button size="sm" colorScheme="blue" mr="5px" w="8rem" onClick={(e) => props.onSignUp(email, password)}>
-                    Registrieren
-                </Button>
-                <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => props.onSignIn(email, password)}>
-                    Anmelden
-                </Button>
-            </Flex>
-        </Stack>
     );
 }

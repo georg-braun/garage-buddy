@@ -1,18 +1,9 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import {
-    getAuth,
-    signInWithRedirect,
-    signOut,
-    onAuthStateChanged,
-    GithubAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    connectAuthEmulator,
-} from '@firebase/auth';
+import { getAuth, signInWithRedirect, signOut, onAuthStateChanged, GoogleAuthProvider } from '@firebase/auth';
 import firebaseApp from './firebase';
 import { createUser } from './userDb';
 
-const provider = new GithubAuthProvider();
+const provider = new GoogleAuthProvider();
 
 /**
  *  Provide authentication context
@@ -55,44 +46,11 @@ function useProvideAuth() {
         }
     };
 
-    const registerUserWithEmailAndPassword = async (email, password) => {
+    const signinWithGoogle = () => {
         setLoading(true);
 
-        let errorMessage = '';
         const auth = getAuth(firebaseApp);
-        //connectAuthEmulator(auth, 'localhost:9099');
-        //return signInWithRedirect(auth, provider).then((response) => handleUser(response.user));
-        await createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                //handleUser(user);
-            })
-            .catch((error) => {
-                console.log(error.code + error.message);
-                errorMessage = error.message;
-            });
-
-        return Promise.resolve(errorMessage);
-    };
-
-    const loginUserWithEmailAndPassword = async (email, password) => {
-        setLoading(true);
-
-        let errorMessage = '';
-        const auth = getAuth(firebaseApp);
-        //connectAuthEmulator(auth, 'localhost:9099');
-        //return signInWithRedirect(auth, provider).then((response) => handleUser(response.user));
-        await signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                //handleUser(user);
-            })
-            .catch((error) => {
-                console.log(error.code + error.message);
-                errorMessage = error.message;
-            });
-
-        return Promise.resolve(errorMessage);
+        return signInWithRedirect(auth, provider).then((response) => handleUser(response.user));
     };
 
     const signout = () => {
@@ -110,8 +68,7 @@ function useProvideAuth() {
     return {
         user,
         loading,
-        registerUserWithEmailAndPassword,
-        loginUserWithEmailAndPassword,
+        signinWithGoogle,
         signout,
     };
 }
