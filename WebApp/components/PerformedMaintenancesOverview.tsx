@@ -74,7 +74,7 @@ export default function PerformedMaintenancesOverview(props: IPerformedMaintenan
                     </Button>
                 </PerformedMaintenanceEditModal>
             ) : (
-                <div>Lege ein Insepektionsmuster an um eine Inspektion als erledigt einzutragen.</div>
+                <div>Lege ein Inspektionsmuster an um eine Inspektion als erledigt einzutragen.</div>
             )}
         </div>
     );
