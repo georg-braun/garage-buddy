@@ -1,9 +1,17 @@
 import { useState, useEffect, useContext, createContext } from 'react';
-import { getAuth, signInWithRedirect, signOut, onAuthStateChanged, GoogleAuthProvider } from '@firebase/auth';
+import {
+    getAuth,
+    signInWithRedirect,
+    signOut,
+    onAuthStateChanged,
+    GoogleAuthProvider,
+    GithubAuthProvider,
+} from '@firebase/auth';
 import firebaseApp from './firebase';
 import { createUser } from './userDb';
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 /**
  *  Provide authentication context
@@ -50,7 +58,14 @@ function useProvideAuth() {
         setLoading(true);
 
         const auth = getAuth(firebaseApp);
-        return signInWithRedirect(auth, provider).then((response) => handleUser(response.user));
+        return signInWithRedirect(auth, googleProvider).then((response) => handleUser(response.user));
+    };
+
+    const signinWithGithub = () => {
+        setLoading(true);
+
+        const auth = getAuth(firebaseApp);
+        return signInWithRedirect(auth, githubProvider).then((response) => handleUser(response.user));
     };
 
     const signout = () => {
@@ -69,6 +84,7 @@ function useProvideAuth() {
         user,
         loading,
         signinWithGoogle,
+        signinWithGithub,
         signout,
     };
 }

@@ -4,6 +4,8 @@ import styles from './layout.module.css';
 import Link from 'next/link';
 import { Center, Flex, Heading, Spacer } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
+import { Icon } from '@chakra-ui/react';
+import { AiFillGithub, AiFillGoogleCircle } from 'react-icons/ai';
 
 export const siteTitle = 'Inspektionen';
 
@@ -52,9 +54,14 @@ export default function Layout({ children }) {
                     <Flex direction="column" alignItems="center" padding="10" rounded="6">
                         <Heading>Garage</Heading>
                         <Heading mb="8">Buddy</Heading>
-                        <Button size="sm" colorScheme="blue" w="8rem" onClick={() => auth?.signinWithGoogle()}>
-                            Login
-                        </Button>
+                        <Flex>
+                            <Button size="sm" colorScheme="blue" w="3rem" mr="1rem" onClick={() => auth?.signinWithGithub()}>
+                                <Icon  as={AiFillGithub} />
+                            </Button>
+                            <Button size="sm" colorScheme="blue" w="3rem" onClick={() => auth?.signinWithGoogle()}>
+                                <Icon as={AiFillGoogleCircle} />
+                            </Button>
+                        </Flex>
                     </Flex>
                 </Flex>
             )}

@@ -38,6 +38,7 @@
         "react": "17.0.2",
         "react-data-table-component": "^7.4.5",
         "react-dom": "17.0.2",
+        "react-icons": "^4.3.1",
         "remark": "^12.0.0",
         "remark-html": "^12.0.0",
         "uuid": "^8.3.2"
