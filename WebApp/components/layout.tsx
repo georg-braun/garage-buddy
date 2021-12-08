@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useAuth } from '@/lib/infrastructure/auth';
 import styles from './layout.module.css';
 import Link from 'next/link';
-import { Flex, Heading } from '@chakra-ui/layout';
+import { Center, Flex, Heading, Spacer, Wrap, WrapItem } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 
 export const siteTitle = 'Inspektionen';
@@ -28,31 +28,31 @@ export default function Layout({ children }) {
 
             {auth?.user ? (
                 <Flex direction="column">
-                    <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="space-between" p="3">
-                        <Flex>
-                            <Flex mr="5">
-                                <Link href="/">🏠 Startseite</Link>
-                            </Flex>
-                            <Flex>
-                                <Link href="/vehicle">🚘 Fahrzeuge</Link>
-                            </Flex>
+                    <Flex w="100vw" bg="gray.200" alignItems="center" justifyContent="space-between" p="3" wrap="wrap">
+                        <Flex mr="5">
+                            <Link href="/">🏠 Startseite</Link>
                         </Flex>
                         <Flex>
-                            🧔 {auth.user.email}
+                            <Link href="/vehicle">🚘 Fahrzeuge</Link>
+                        </Flex>
+                        <Spacer />
+                        <Flex>🧔 {auth.user.email}</Flex>
+                        <Flex>
                             <Button colorScheme="blue" size="xs" ml="5" onClick={(e) => auth.signout()}>
                                 Sign Out
                             </Button>
                         </Flex>
                     </Flex>
-
-                    <div>{children}</div>
+                    <Center padding="10">
+                        <div>{children}</div>
+                    </Center>
                 </Flex>
             ) : (
                 <Flex h="100vh" alignItems="center" justifyContent="center">
                     <Flex direction="column" alignItems="center" padding="10" rounded="6">
                         <Heading>Garage</Heading>
                         <Heading mb="8">Buddy</Heading>
-                        <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => auth?.signinWithGitHub()}>
+                        <Button size="sm" colorScheme="blue" w="8rem" onClick={(e) => auth?.signinWithGoogle()}>
                             Login
                         </Button>
                     </Flex>

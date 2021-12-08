@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { getAuth, signInWithRedirect, signOut, onAuthStateChanged, GithubAuthProvider } from '@firebase/auth';
+import { getAuth, signInWithRedirect, signOut, onAuthStateChanged, GoogleAuthProvider } from '@firebase/auth';
 import firebaseApp from './firebase';
 import { createUser } from './userDb';
 
-const provider = new GithubAuthProvider();
+const provider = new GoogleAuthProvider();
 
 /**
  *  Provide authentication context
@@ -46,7 +46,7 @@ function useProvideAuth() {
         }
     };
 
-    const signinWithGitHub = () => {
+    const signinWithGoogle = () => {
         setLoading(true);
 
         const auth = getAuth(firebaseApp);
@@ -68,7 +68,7 @@ function useProvideAuth() {
     return {
         user,
         loading,
-        signinWithGitHub,
+        signinWithGoogle,
         signout,
     };
 }

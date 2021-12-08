@@ -42,7 +42,7 @@ export default function PerformedMaintenanceEditModal(props: VehicleEditModalPro
 
     const initialValue: FormFields = {
         patternId: props.initialValue?.patternId ?? '0',
-        kilometer: props.initialValue?.kilometer ?? 0,
+        kilometer: props.initialValue?.kilometer ?? props.vehicle.kilometer ?? 0,
         date: props.initialValue?.date.toISOString().slice(0, 10) ?? new Date().toISOString().slice(0, 10),
     };
 
@@ -90,7 +90,7 @@ export default function PerformedMaintenanceEditModal(props: VehicleEditModalPro
                                                 >
                                                     {props.vehicle.patterns.map((_) => (
                                                         <option key={_.id} value={_.id}>
-                                                            {_.name} {_.id}
+                                                            {_.name}
                                                         </option>
                                                     ))}
                                                 </Select>
