@@ -35,7 +35,7 @@ export default function Home({}) {
         const patterns = vehicle.patterns;
 
         patterns.forEach((pattern) => {
-            const tasksForCurrentPattern = createTasksFromPattern(vehicle, pattern, 5000, 30, new Date());
+            const tasksForCurrentPattern = createTasksFromPattern(vehicle, pattern, 1000, 30, new Date());
             allTasks.push(...tasksForCurrentPattern);
         });
 
@@ -75,7 +75,7 @@ export default function Home({}) {
         }
 
         console.log('try to get user vehicles');
-        const vehiclesFromRepo = await vehicleRepository.getVehiclesForUserAsync(auth.user.uid);        
+        const vehiclesFromRepo = await vehicleRepository.getVehiclesForUserAsync(auth.user.uid);
         setVehicles(vehiclesFromRepo);
 
         if (!selectedVehicle) return;
@@ -154,7 +154,7 @@ export default function Home({}) {
                     </Box>
                     <Box mt="10">
                         <Heading size="lg">Aufgaben</Heading>
-                        <Box fontWeight="thin">in den nächsten 500 Kilometer / 30 Tagen</Box>
+                        <Box fontWeight="thin">in den nächsten 1000 Kilometer / 30 Tagen</Box>
                         {selectedVehicleTasks ? (
                             <Box mt="15px">
                                 {selectedVehicleTasks?.map((task) => (
