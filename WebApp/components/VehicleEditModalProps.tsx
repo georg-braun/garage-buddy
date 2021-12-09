@@ -44,6 +44,7 @@ export default function VehicleEditModal(props: VehicleEditModalProps) {
                             initialValues={initialValue}
                             onSubmit={async (values) => {
                                 const vehicle: IVehicle = values as IVehicle;
+
                                 await props.onSubmitted(vehicle);
                                 onClose();
                             }}
@@ -63,7 +64,12 @@ export default function VehicleEditModal(props: VehicleEditModalProps) {
                                         {({ field, form }) => (
                                             <FormControl isInvalid={form.errors.name && form.touched.name}>
                                                 <FormLabel htmlFor="kilometer">Kilometer</FormLabel>
-                                                <Input {...field} id="kilometer" placeholder="kilometer" />
+                                                <Input
+                                                    {...field}
+                                                    id="kilometer"
+                                                    type="number"
+                                                    placeholder="kilometer"
+                                                />
                                                 <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                                             </FormControl>
                                         )}
