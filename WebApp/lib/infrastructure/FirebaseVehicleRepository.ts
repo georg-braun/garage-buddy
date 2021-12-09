@@ -37,7 +37,11 @@ class FirebaseVehicleRepository implements IVehicleRepository {
 
         // convert the firestore timestamps to javascript dates
         vehiclesOfUser.forEach((vehicle) => {
-            vehicle.performedMaintenances.forEach((maintenance) => (maintenance.date = maintenance.date.toDate()));
+            vehicle.performedMaintenances.forEach((maintenance) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const timestamp = maintenance.date as any;
+                maintenance.date = timestamp.toDate();
+            });
         });
 
         return vehiclesOfUser;
